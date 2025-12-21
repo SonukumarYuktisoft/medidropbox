@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:medidropbox/core/helpers/app_export.dart';
 import 'package:medidropbox/core/utility/utility_screen/network/bloc/network_bloc.dart';
-import 'package:medidropbox/routes/app_routes.dart';
+
 
 class NoInternetScreen extends StatelessWidget {
   const NoInternetScreen({super.key});
@@ -14,7 +13,7 @@ class NoInternetScreen extends StatelessWidget {
         listener: (context, state) {
           if (state.isConnected) {
             // Redirect to login when connection is restored
-            context.go(AppRoutes.loginScreen);
+            AppNavigators.pushNamed(AppRoutesName.loginView);
           }
         },
         builder: (context, state) {

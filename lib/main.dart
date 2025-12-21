@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medidropbox/core/navigators/NavigationState.dart';
+import 'package:medidropbox/core/navigators/app_navigators/app_key.dart';
 import 'package:medidropbox/core/utility/themes/app_theme.dart';
 import 'package:medidropbox/core/utility/utility_screen/network/bloc/network_bloc.dart';
-import 'package:medidropbox/routes/app_pages.dart';
-import 'package:medidropbox/routes/bloc_provider/app_blocs/app_blocs_provider.dart';
+import 'package:medidropbox/navigator/app_blocs/app_blocs.dart';
+import 'package:medidropbox/navigator/routes/app_go_routes/app_routes.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: AppBlocsProvider.appBloc,
+      providers: AppBlocs.appBloc,
       child: BlocListener<NetworkBloc, NetworkState>(
         listener: (context, state) {
           if (state.status == NetworkStatus.disconnected) {
@@ -39,9 +40,10 @@ class MyApp extends StatelessWidget {
           }
         },
         child: MaterialApp.router(
+           scaffoldMessengerKey: AppKey.scaffoldMessengerKey,
           title: "MediDropBox",
           theme: AppTheme.lightTheme,
-          routerConfig: appRouter,
+          routerConfig: AppRouter.router,
           debugShowCheckedModeBanner: false,
         ),
       ),
