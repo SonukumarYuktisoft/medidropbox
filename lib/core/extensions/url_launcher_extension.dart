@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medidropbox/core/extensions/button_extension.dart';
+import 'package:medidropbox/core/helpers/app_export.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 extension UrlLauncherExtension on String {
@@ -389,9 +390,9 @@ class UrlLauncherExamples extends StatelessWidget {
           child: const Text('Instagram'),
         ),
 
-        'Twitter'.toElevatedButton(
+        'Twitter'.toHeadingText().asElevatedButton(
           onPressed: () => 'https://flutter.dev'.openUrlInApp(),
-          backgroundColor: Colors.deepOrange,
+         
         ),
         // With callbacks
         ElevatedButton(

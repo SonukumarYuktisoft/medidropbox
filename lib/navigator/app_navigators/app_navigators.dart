@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:medidropbox/core/navigators/app_navigators/app_key.dart';
+import 'package:medidropbox/navigator/app_navigators/app_key.dart';
 import 'package:medidropbox/navigator/routes/app_go_routes/app_routes.dart';
 import 'package:medidropbox/navigator/routes/app_routes/app_routes_name.dart';
 

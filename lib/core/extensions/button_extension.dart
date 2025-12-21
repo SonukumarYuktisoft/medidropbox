@@ -1,490 +1,255 @@
 import 'package:flutter/material.dart';
 
-// Extension on String to create buttons
-extension StringToButtonExtension on String {
-  // Convert String to ElevatedButton
-  ElevatedButton toElevatedButton({
-    required VoidCallback? onPressed,
-    VoidCallback? onLongPress,
-    Color? backgroundColor,
-    Color? foregroundColor,
-    EdgeInsetsGeometry? padding,
-    double ?radius
-  }) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      onLongPress: onLongPress,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        foregroundColor: foregroundColor,
-        padding: padding,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius??20))
-      ),
-      child: Text(this,
-       
-      ),
-    );
-  }
-
-  // Convert String to TextButton
-  TextButton toTextButton({
+extension ButtonExtension on Widget {
+  /// Wraps the widget in an ElevatedButton
+  Widget asElevatedButton({
     required VoidCallback? onPressed,
     ButtonStyle? style,
-    VoidCallback? onLongPress,
+    FocusNode? focusNode,
+    bool autofocus = false,
+    double? width,
+    double? height,
   }) {
-    return TextButton(
+    Widget button = ElevatedButton(
       onPressed: onPressed,
-      onLongPress: onLongPress,
       style: style,
-      child: Text(this),
+      focusNode: focusNode,
+      autofocus: autofocus,
+      child: this,
     );
+    
+    if (width != null || height != null) {
+      return SizedBox(
+        width: width,
+        height: height,
+        child: button,
+      );
+    }
+    return button;
   }
 
-  // Convert String to OutlinedButton
-  OutlinedButton toOutlinedButton({
+  /// Wraps the widget in a TextButton
+  Widget asTextButton({
     required VoidCallback? onPressed,
     ButtonStyle? style,
-    VoidCallback? onLongPress,
+    FocusNode? focusNode,
+    bool autofocus = false,
+    double? width,
+    double? height,
   }) {
-    return OutlinedButton(
+    Widget button = TextButton(
       onPressed: onPressed,
-      onLongPress: onLongPress,
       style: style,
-      child: Text(this),
+      focusNode: focusNode,
+      autofocus: autofocus,
+      child: this,
     );
+    
+    if (width != null || height != null) {
+      return SizedBox(
+        width: width,
+        height: height,
+        child: button,
+      );
+    }
+    return button;
   }
 
-  // Convert String to styled ElevatedButton with common parameters
-  ElevatedButton toStyledElevatedButton({
+  /// Wraps the widget in an OutlinedButton
+  Widget asOutlinedButton({
     required VoidCallback? onPressed,
-    Color? backgroundColor,
-    Color? foregroundColor,
-    EdgeInsetsGeometry? padding,
-    BorderRadius? borderRadius,
-    double? elevation,
+    ButtonStyle? style,
+    FocusNode? focusNode,
+    bool autofocus = false,
+    double? width,
+    double? height,
   }) {
-    return ElevatedButton(
+    Widget button = OutlinedButton(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        foregroundColor: foregroundColor,
-        padding: padding,
-        elevation: elevation,
-        shape: borderRadius != null
-            ? RoundedRectangleBorder(borderRadius: borderRadius)
-            : null,
-      ),
-      child: Text(this),
+      style: style,
+      focusNode: focusNode,
+      autofocus: autofocus,
+      child: this,
     );
+    
+    if (width != null || height != null) {
+      return SizedBox(
+        width: width,
+        height: height,
+        child: button,
+      );
+    }
+    return button;
   }
 
-  // Convert String to styled TextButton with common parameters
-  TextButton toStyledTextButton({
+  /// Wraps the widget in an IconButton
+  Widget asIconButton({
     required VoidCallback? onPressed,
-    Color? foregroundColor,
-    EdgeInsetsGeometry? padding,
-    BorderRadius? borderRadius,
-  }) {
-    return TextButton(
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        foregroundColor: foregroundColor,
-        padding: padding,
-        shape: borderRadius != null
-            ? RoundedRectangleBorder(borderRadius: borderRadius)
-            : null,
-      ),
-      child: Text(this),
-    );
-  }
-
-  // Convert String to styled OutlinedButton with common parameters
-  OutlinedButton toStyledOutlinedButton({
-    required VoidCallback? onPressed,
-    Color? foregroundColor,
-    Color? borderColor,
-    double? borderWidth,
-    EdgeInsetsGeometry? padding,
-    BorderRadius? borderRadius,
-  }) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        foregroundColor: foregroundColor,
-        padding: padding,
-        side: borderColor != null || borderWidth != null
-            ? BorderSide(
-                color: borderColor ?? Colors.grey,
-                width: borderWidth ?? 1,
-              )
-            : null,
-        shape: borderRadius != null
-            ? RoundedRectangleBorder(borderRadius: borderRadius)
-            : null,
-      ),
-      child: Text(this),
-    );
-  }
-}
-
-// Extension for ElevatedButton
-extension ElevatedButtonExtension on ElevatedButton {
-  ElevatedButton withStyle({
-    Color? backgroundColor,
-    Color? foregroundColor,
-    EdgeInsetsGeometry? padding,
-    Size? minimumSize,
-    Size? maximumSize,
-    BorderRadius? borderRadius,
-    double? elevation,
-  }) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      onLongPress: onLongPress,
-      style: (style ?? ElevatedButton.styleFrom()).copyWith(
-        backgroundColor: backgroundColor != null
-            ? MaterialStateProperty.all(backgroundColor)
-            : null,
-        foregroundColor: foregroundColor != null
-            ? MaterialStateProperty.all(foregroundColor)
-            : null,
-        padding: padding != null ? MaterialStateProperty.all(padding) : null,
-        minimumSize: minimumSize != null
-            ? MaterialStateProperty.all(minimumSize)
-            : null,
-        maximumSize: maximumSize != null
-            ? MaterialStateProperty.all(maximumSize)
-            : null,
-        shape: borderRadius != null
-            ? MaterialStateProperty.all(
-                RoundedRectangleBorder(borderRadius: borderRadius),
-              )
-            : null,
-        elevation: elevation != null
-            ? MaterialStateProperty.all(elevation)
-            : null,
-      ),
-      child: child,
-    );
-  }
-
-  ElevatedButton withLoading(bool isLoading) {
-    return ElevatedButton(
-      onPressed: isLoading ? null : onPressed,
-      onLongPress: isLoading ? null : onLongPress,
-      style: style,
-      child: isLoading && child != null
-          ? const SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
-          : child,
-    );
-  }
-}
-
-// Extension for TextButton
-extension TextButtonExtension on TextButton {
-  TextButton withStyle({
-    Color? foregroundColor,
-    EdgeInsetsGeometry? padding,
-    Size? minimumSize,
-    Size? maximumSize,
-    BorderRadius? borderRadius,
-  }) {
-    return TextButton(
-      onPressed: onPressed,
-      onLongPress: onLongPress,
-      style: (style ?? TextButton.styleFrom()).copyWith(
-        foregroundColor: foregroundColor != null
-            ? MaterialStateProperty.all(foregroundColor)
-            : null,
-        padding: padding != null ? MaterialStateProperty.all(padding) : null,
-        minimumSize: minimumSize != null
-            ? MaterialStateProperty.all(minimumSize)
-            : null,
-        maximumSize: maximumSize != null
-            ? MaterialStateProperty.all(maximumSize)
-            : null,
-        shape: borderRadius != null
-            ? MaterialStateProperty.all(
-                RoundedRectangleBorder(borderRadius: borderRadius),
-              )
-            : null,
-      ),
-      child: Text(child.toString()),
-    );
-  }
-
-  TextButton withLoading(bool isLoading) {
-    return TextButton(
-      onPressed: isLoading ? null : onPressed,
-      onLongPress: isLoading ? null : onLongPress,
-      style: style,
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 200),
-        child: isLoading
-            ? const SizedBox(
-                key: ValueKey("loader"),
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              )
-            : child,
-      ),
-    );
-  }
-}
-
-// Extension for OutlinedButton
-extension OutlinedButtonExtension on OutlinedButton {
-  OutlinedButton withStyle({
-    Color? foregroundColor,
-    Color? borderColor,
-    double? borderWidth,
-    EdgeInsetsGeometry? padding,
-    Size? minimumSize,
-    Size? maximumSize,
-    BorderRadius? borderRadius,
-  }) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      onLongPress: onLongPress,
-      style: (style ?? OutlinedButton.styleFrom()).copyWith(
-        foregroundColor: foregroundColor != null
-            ? MaterialStateProperty.all(foregroundColor)
-            : null,
-        padding: padding != null ? MaterialStateProperty.all(padding) : null,
-        minimumSize: minimumSize != null
-            ? MaterialStateProperty.all(minimumSize)
-            : null,
-        maximumSize: maximumSize != null
-            ? MaterialStateProperty.all(maximumSize)
-            : null,
-        side: (borderColor != null || borderWidth != null)
-            ? MaterialStateProperty.all(
-                BorderSide(
-                  color: borderColor ?? Colors.grey,
-                  width: borderWidth ?? 1,
-                ),
-              )
-            : null,
-        shape: borderRadius != null
-            ? MaterialStateProperty.all(
-                RoundedRectangleBorder(borderRadius: borderRadius),
-              )
-            : null,
-      ),
-      child: child,
-    );
-  }
-
-  OutlinedButton withLoading(bool isLoading) {
-    return OutlinedButton(
-      onPressed: isLoading ? null : onPressed,
-      onLongPress: isLoading ? null : onLongPress,
-      style: style,
-      child: isLoading
-          ? const SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
-          : child,
-    );
-  }
-}
-
-// Extension for IconButton
-extension IconButtonExtension on IconButton {
-  IconButton withStyle({
-    Color? color,
     double? iconSize,
+    Color? color,
+    Color? focusColor,
+    Color? hoverColor,
+    Color? highlightColor,
+    Color? splashColor,
+    Color? disabledColor,
     EdgeInsetsGeometry? padding,
-    Color? backgroundColor,
-    BorderRadius? borderRadius,
+    String? tooltip,
   }) {
     return IconButton(
       onPressed: onPressed,
-      icon: icon,
-      color: color ?? this.color,
-      iconSize: iconSize ?? this.iconSize,
-      padding: padding ?? this.padding,
-      style: backgroundColor != null || borderRadius != null
-          ? ButtonStyle(
-              backgroundColor: backgroundColor != null
-                  ? MaterialStateProperty.all(backgroundColor)
-                  : null,
-              shape: borderRadius != null
-                  ? MaterialStateProperty.all(
-                      RoundedRectangleBorder(borderRadius: borderRadius),
-                    )
-                  : null,
-            )
-          : style,
-      tooltip: tooltip,
-    );
-  }
-
-  IconButton withLoading(bool isLoading) {
-    return IconButton(
-      onPressed: isLoading ? null : onPressed,
-      icon: isLoading
-          ? const SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
-          : icon,
-      color: color,
+      icon: this,
       iconSize: iconSize,
-      padding: padding,
-      style: style,
+      color: color,
+      focusColor: focusColor,
+      hoverColor: hoverColor,
+      highlightColor: highlightColor,
+      splashColor: splashColor,
+      disabledColor: disabledColor,
+      padding: padding ?? const EdgeInsets.all(8.0),
       tooltip: tooltip,
     );
   }
-}
 
-// Extension for FloatingActionButton
-extension FloatingActionButtonExtension on FloatingActionButton {
-  FloatingActionButton withStyle({
+  /// Wraps the widget in a FilledButton
+  Widget asFilledButton({
+    required VoidCallback? onPressed,
+    ButtonStyle? style,
+    FocusNode? focusNode,
+    bool autofocus = false,
+    double? width,
+    double? height,
+    Color ? color
+  }) {
+    Widget button = FilledButton(
+      
+      onPressed: onPressed,
+      style: style??ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll<Color?>(color),
+        padding: WidgetStatePropertyAll<EdgeInsets>(EdgeInsets.all(0))
+      ),
+      focusNode: focusNode,
+      autofocus: autofocus,
+      child: this,
+    );
+    
+    if (width != null || height != null) {
+      return SizedBox(
+        width: width,
+        height: height,
+        child: button,
+      );
+    }
+    return button;
+  }
+
+  /// Wraps the widget in an InkWell for custom tap handling
+  Widget asButton({
+    required VoidCallback? onTap,
+    VoidCallback? onDoubleTap,
+    VoidCallback? onLongPress,
+    BorderRadius? borderRadius,
+    Color? splashColor,
+    Color? highlightColor,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      onDoubleTap: onDoubleTap,
+      onLongPress: onLongPress,
+      borderRadius: borderRadius,
+      splashColor: splashColor,
+      highlightColor: highlightColor,
+      child: this,
+    );
+  }
+
+  /// Wraps the widget in a GestureDetector for gesture handling
+  Widget onTap(VoidCallback? onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: this,
+    );
+  }
+
+  /// Creates a button with padding
+  Widget asButtonWithPadding({
+    required VoidCallback? onPressed,
+    EdgeInsetsGeometry padding = const EdgeInsets.symmetric(
+      horizontal: 24,
+      vertical: 12,
+    ),
     Color? backgroundColor,
     Color? foregroundColor,
-    double? elevation,
     BorderRadius? borderRadius,
   }) {
-    return FloatingActionButton(
+    return ElevatedButton(
       onPressed: onPressed,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      foregroundColor: foregroundColor ?? this.foregroundColor,
-      elevation: elevation ?? this.elevation,
-      shape: borderRadius != null
-          ? RoundedRectangleBorder(borderRadius: borderRadius)
-          : shape,
-      tooltip: tooltip,
-      child: child,
-    );
-  }
-
-  FloatingActionButton withLoading(bool isLoading) {
-    return FloatingActionButton(
-      onPressed: isLoading ? null : onPressed,
-      backgroundColor: backgroundColor,
-      foregroundColor: foregroundColor,
-      elevation: elevation,
-      shape: shape,
-      tooltip: tooltip,
-      child: isLoading
-          ? const SizedBox(
-              height: 24,
-              width: 24,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: Colors.white,
-              ),
-            )
-          : child,
-    );
-  }
-}
-
-// Utility extension for common button patterns
-extension ButtonStyleExtension on ButtonStyle {
-  ButtonStyle withRoundedCorners(double radius) {
-    return copyWith(
-      shape: MaterialStateProperty.all(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
+      style: ElevatedButton.styleFrom(
+        padding: padding,
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius ?? BorderRadius.circular(8),
+        ),
       ),
+      child: this,
     );
   }
 
-  ButtonStyle withPadding(EdgeInsetsGeometry padding) {
-    return copyWith(padding: MaterialStateProperty.all(padding));
-  }
-
-  ButtonStyle withSize({double? width, double? height}) {
-    return copyWith(
-      minimumSize: MaterialStateProperty.all(Size(width ?? 0, height ?? 0)),
+  /// Creates a rounded button
+  Widget asRoundedButton({
+    required VoidCallback? onPressed,
+    double borderRadius = 24,
+    Color? backgroundColor,
+    Color? foregroundColor,
+    EdgeInsetsGeometry? padding,
+       double? width,
+    double? height,
+  }) {
+    Widget button = ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        padding: padding,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+      ),
+      child: this,
     );
+    
+    if (width != null || height != null) {
+      return SizedBox(
+        width: width,
+        height: height,
+        child: button,
+      );
+      
+      }
+      return button;
+
   }
-}
 
-// Example usage helper
-class ButtonExamples extends StatelessWidget {
-  const ButtonExamples({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // String to ElevatedButton
-        'Click Me'.toElevatedButton(onPressed: () {}),
-
-        // String to styled ElevatedButton
-        'Submit'.toStyledElevatedButton(
-          onPressed: () {},
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+  /// Creates a circular button (for icons)
+  Widget asCircularButton({
+    required VoidCallback? onPressed,
+    Color? backgroundColor,
+    Color? foregroundColor,
+    double size = 56,
+  }) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          foregroundColor: foregroundColor,
+          shape: const CircleBorder(),
+          padding: EdgeInsets.zero,
         ),
-
-        // String to TextButton
-        'Cancel'.toTextButton(onPressed: () {}),
-
-        // String to styled TextButton
-        'Learn More'.toStyledTextButton(
-          onPressed: () {},
-          foregroundColor: Colors.blue,
-          borderRadius: BorderRadius.circular(8),
-        ),
-
-        // String to OutlinedButton
-        'Outlined'.toOutlinedButton(onPressed: () {}),
-
-        // String to styled OutlinedButton
-        'Sign Up'.toStyledOutlinedButton(
-          onPressed: () {},
-          borderColor: Colors.green,
-          borderWidth: 2,
-          foregroundColor: Colors.green,
-          borderRadius: BorderRadius.circular(8),
-        ),
-
-        // ElevatedButton with custom style (existing)
-        ElevatedButton(onPressed: () {}, child: const Text('Button')).withStyle(
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        ),
-
-        // ElevatedButton with loading
-        ElevatedButton(
-          onPressed: () {},
-          child: const Text('Submit'),
-        ).withLoading(true),
-
-        // Chaining String to Button with loading
-        'Processing'.toElevatedButton(onPressed: () {}).withLoading(true),
-
-        // IconButton with background
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.favorite),
-        ).withStyle(
-          backgroundColor: Colors.red.shade50,
-          color: Colors.red,
-          borderRadius: BorderRadius.circular(12),
-        ),
-
-        // FAB with loading
-        FloatingActionButton(
-          onPressed: () {},
-          child: const Icon(Icons.add),
-        ).withLoading(false),
-      ],
+        child: this,
+      ),
     );
   }
 }

@@ -5,3 +5,5 @@ export 'package:medidropbox/navigator/app_navigators/app_navigators.dart';
 export 'package:medidropbox/navigator/routes/app_routes/app_routes_name.dart';
 export 'package:medidropbox/core/extensions/image_extesion.dart';
 export 'dart:async';
+export 'package:medidropbox/core/extensions/space_extension.dart' ;
+

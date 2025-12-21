@@ -1,5 +1,8 @@
 
 
+import 'package:medidropbox/app/dashboard/tabs/home/widget/available_doctors.dart' show AvailableDoctors;
+import 'package:medidropbox/app/dashboard/tabs/home/widget/banner_card.dart';
+import 'package:medidropbox/app/dashboard/tabs/home/widget/hospital_card.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 
 class HomeTab extends StatelessWidget {
@@ -7,6 +10,17 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: "Home".toHeadingText(),);
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          BannerCard(),
+          15.heightBox,
+          HospitalCard(),
+          10.heightBox,
+          AvailableDoctors(),
+      
+        ],
+      ),
+    );
   }
 }

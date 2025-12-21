@@ -1,4 +1,5 @@
 import 'package:medidropbox/app/dashboard/bloc/dashboard_bloc.dart';
+import 'package:medidropbox/app/dashboard/dashboard_widget/dashboard_top_baar.dart';
 import 'package:medidropbox/app/dashboard/tabs/batches/batches_tab.dart';
 import 'package:medidropbox/app/dashboard/tabs/home/home_tab.dart';
 import 'package:medidropbox/app/dashboard/tabs/store/store_tab.dart';
@@ -13,7 +14,12 @@ class NavBaarBody extends StatelessWidget {
     return BlocBuilder<DashboardBloc, DashboardState>(
       buildWhen: (previous, current) => previous.tabPosition!=current.tabPosition,
       builder: (context, state) {
-        return [HomeTab(),BatchesTab(),StoreTab()][state.tabPosition];
+        return Column(
+          children: [
+            DashboardTopBaar(),
+            Expanded(child: [HomeTab(),BatchesTab(),StoreTab()][state.tabPosition])
+          ],
+        );
       },
     );
   }
