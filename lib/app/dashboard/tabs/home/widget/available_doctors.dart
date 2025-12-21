@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
-import 'package:medidropbox/core/utility/const/app_enums.dart';
 
 class AvailableDoctors extends StatelessWidget {
   const AvailableDoctors({super.key});

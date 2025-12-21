@@ -32,6 +32,20 @@ class AppNavigators {
       extra: extra,
     );
   }
+static void pushNamedAndRemoveUntil(
+  String routeName, {
+  Map<String, String>? pathParameters,
+  Map<String, dynamic>? queryParameters,
+  Object? extra,
+}) {
+  _router.goNamed(
+    routeName,
+    pathParameters: pathParameters ?? {},
+    queryParameters: queryParameters ?? {},
+    extra: extra,
+  );
+}
+
 
   static Future<T?> push<T>(String path, {Object? extra}) {
     return _router.push<T>(path, extra: extra);

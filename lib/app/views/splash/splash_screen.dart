@@ -1,4 +1,3 @@
-import 'package:get/utils.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 import 'package:medidropbox/core/utility/utility_screen/network/bloc/network_bloc.dart';
 
@@ -44,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             'assets/images/app_logo.svg'.toAssetSvgImage(
-              height:context.height * .2,
+              height:MediaQuery.widthOf(context) * .2,
               width: MediaQuery.of(context).size.width * .2,
             ),
             // const FlutterLogo(size: 100),

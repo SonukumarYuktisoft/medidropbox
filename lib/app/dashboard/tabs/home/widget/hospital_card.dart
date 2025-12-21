@@ -1,3 +1,4 @@
+import 'package:medidropbox/core/extensions/button_extension.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 
 class HospitalCard extends StatelessWidget {
@@ -6,7 +7,7 @@ class HospitalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-  height: 255,
+  height: 260,
   child: ListView(
     scrollDirection: Axis.horizontal,
     padding: EdgeInsets.only(left: 15,right: 15,bottom: 10),
@@ -64,15 +65,11 @@ class HospitalCard extends StatelessWidget {
           /// IMAGE
           Stack(
             children: [
-              ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(18)),
-                child: Image.network(
-                  image,
-                  height: 120,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+              image.toTopRadiusImage(
+                height: 120,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                radius: 18
               ),
 
               /// Favourite icon
@@ -185,7 +182,9 @@ class HospitalCard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ).asButton(onTap: (){
+      AppNavigators.pushNamed(AppRoutesName.hospitalDetailsView);
+    });
   }
 }
 

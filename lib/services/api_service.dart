@@ -3,7 +3,7 @@ import 'dart:developer' show log;
 
 import 'package:dio/dio.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:medidropbox/core/helpers/toast/toast_helper.dart';
+import 'package:medidropbox/core/common/app_snackbaar.dart';
 import 'package:medidropbox/services/shared_preferences_helper.dart';
 
 class ApiService {
@@ -20,7 +20,7 @@ class ApiService {
     bool hasInternet = await InternetConnectionChecker.instance.hasConnection;
     if (!hasInternet) {
       log("❌ No Internet Connection");
-      ToastHelper.warning(message: "No Internet Connection");
+      AppSnackbar.showWarning("No Internet Connection");
       return Response(
         requestOptions: RequestOptions(path: url),
         statusCode: 0,
@@ -65,7 +65,7 @@ class ApiService {
     bool hasInternet = await InternetConnectionChecker.instance.hasConnection;
     if (!hasInternet) {
       log("❌ No Internet Connection");
-      ToastHelper.warning(message: "No Internet Connection");
+      AppSnackbar.showWarning( "No Internet Connection");
       return Response(
         requestOptions: RequestOptions(path: url),
         statusCode: 0,
@@ -109,7 +109,7 @@ class ApiService {
     bool hasInternet = await InternetConnectionChecker.instance.hasConnection;
     if (!hasInternet) {
       log("❌ No Internet Connection");
-      ToastHelper.warning(message: "No Internet Connection");
+      AppSnackbar.showWarning( "No Internet Connection");
       return Response(
         requestOptions: RequestOptions(path: url),
         statusCode: 0,
@@ -153,7 +153,7 @@ class ApiService {
     log("getRequest parameter = ${dictParameter.toString()}");
     bool hasInternet = await InternetConnectionChecker.instance.hasConnection;
     if (!hasInternet) {
-      ToastHelper.warning(message: "No Internet Connection");
+      AppSnackbar.showWarning("No Internet Connection");
       log("❌ No Internet Connection");
       return Response(
         requestOptions: RequestOptions(path: url),
@@ -198,7 +198,7 @@ class ApiService {
     log("getRequest parameter = ${dictParameter.toString()}");
     bool hasInternet = await InternetConnectionChecker.instance.hasConnection;
     if (!hasInternet) {
-      ToastHelper.warning(message: "No Internet Connection");
+      AppSnackbar.showWarning( "No Internet Connection");
       log("❌ No Internet Connection");
       return Response(
         requestOptions: RequestOptions(path: url),
@@ -243,7 +243,7 @@ class ApiService {
     log("getRequest parameter = ${dictParameter.toString()}");
     bool hasInternet = await InternetConnectionChecker.instance.hasConnection;
     if (!hasInternet) {
-      ToastHelper.warning(message: "No Internet Connection");
+      AppSnackbar.showWarning("No Internet Connection");
       log("❌ No Internet Connection");
       return Response(
         requestOptions: RequestOptions(path: url),
