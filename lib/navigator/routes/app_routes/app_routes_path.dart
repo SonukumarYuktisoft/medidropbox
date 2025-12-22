@@ -19,6 +19,7 @@ class AppRoutesPath {
    static const String doctorDetails = '/doctor-details';
     static const String editprofile = '/edit-profile';
 
+    static const String onBoard = '/onboard';
 
 
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medidropbox/app/services/shared_preferences_helper.dart';
 import 'package:medidropbox/core/extensions/button_extension.dart';
 import 'package:medidropbox/core/utility/const/constants_string/onboarding_constants_string.dart';
 import 'package:medidropbox/app/views/OnboardingScreen/bloc/onboarding_bloc.dart';
@@ -7,6 +8,8 @@ import 'package:medidropbox/app/views/OnboardingScreen/bloc/onboarding_event.dar
 import 'package:medidropbox/app/views/OnboardingScreen/bloc/onboarding_state.dart';
 import 'package:medidropbox/app/views/OnboardingScreen/model/onboarding_model.dart';
 import 'package:medidropbox/app/views/OnboardingScreen/view/Widget/onboarding_page.dart';
+import 'package:medidropbox/navigator/app_navigators/app_navigators.dart' show AppNavigators;
+import 'package:medidropbox/navigator/routes/app_routes/app_routes_name.dart';
 
 class OnboardingScreen extends StatelessWidget {
   OnboardingScreen({super.key});
@@ -15,18 +18,18 @@ class OnboardingScreen extends StatelessWidget {
 
   final pages = [
     OnboardingModel(
-      title:OnboardingConstantsString.onboardingTitle1 ,
-      description:OnboardingConstantsString.onboardingDescription1,
+      title: OnboardingConstantsString.onboardingTitle1,
+      description: OnboardingConstantsString.onboardingDescription1,
       image: OnboardingConstantsString.onboardingImage1,
     ),
     OnboardingModel(
-    title:OnboardingConstantsString.onboardingTitle2 ,
-      description:OnboardingConstantsString.onboardingDescription2,
+      title: OnboardingConstantsString.onboardingTitle2,
+      description: OnboardingConstantsString.onboardingDescription2,
       image: OnboardingConstantsString.onboardingImage2,
     ),
     OnboardingModel(
-      title:OnboardingConstantsString.onboardingTitle3 ,
-      description:OnboardingConstantsString.onboardingDescription3,
+      title: OnboardingConstantsString.onboardingTitle3,
+      description: OnboardingConstantsString.onboardingDescription3,
       image: OnboardingConstantsString.onboardingImage3,
     ),
   ];
@@ -37,9 +40,11 @@ class OnboardingScreen extends StatelessWidget {
       create: (_) => OnboardingBloc(),
       child: BlocListener<OnboardingBloc, OnboardingState>(
         listenWhen: (prev, curr) => curr.isCompleted,
-        listener: (context, state) {
-          // TODO: Save onboarding completed in local storage
-          // Navigator.pushReplacement(...)
+        listener: (context, state) async {
+          await SharedPreferencesHelper.setIsFirstTime(false);
+            if (context.mounted) {
+            AppNavigators.pushReplacementNamed(AppRoutesName.loginView);
+          }
         },
         child: Scaffold(
           backgroundColor: const Color(0xFFF5F7FA),
@@ -85,18 +90,7 @@ class OnboardingScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.fromLTRB(24, 0, 24, 40),
 
-                    //   child: SizedBox(
-                    //     width: double.infinity,
-                    //     height: 56,
-                    //     child: "Let's Get Started".toElevatedButton(
-                    //       onPressed: () {},
-                    //       radius: 28,
-                    //     ),
-                    //   ),
-                    // ),
 
                     /// Button
                     Padding(
@@ -120,7 +114,7 @@ class OnboardingScreen extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF4A7EFF),
                             foregroundColor: Colors.white,
-                            elevation: 0,              
+                            elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),

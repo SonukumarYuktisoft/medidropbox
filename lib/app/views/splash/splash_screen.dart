@@ -1,3 +1,4 @@
+import 'package:medidropbox/app/services/shared_preferences_helper.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 import 'package:medidropbox/core/utility/utility_screen/network/bloc/network_bloc.dart';
 
@@ -17,20 +18,45 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _checkConnectionAndNavigate() async {
     // Check network status first
+    context.read<NetworkBloc>().add(CheckNetworkStatus());
 
-    // Wait for 3 seconds
+    // Wait for 3 seconds (splash screen display time)
     await Future.delayed(const Duration(seconds: 3));
 
     if (!mounted) return;
 
-AppNavigators.pushNamed(AppRoutesName.loginView);/* 
-    if (networkState.isConnected) {
-      
-    } else {
-     AppNavigators.pushNamed(AppRoutesName.noInternetConnectionView);
+    final networkState = context.read<NetworkBloc>().state;
 
-      
-    } */
+    // Check network connection
+    if (!networkState.isConnected) {
+      AppNavigators.pushNamed(AppRoutesName.noInternetConnectionView);
+      return;
+    }
+
+    // Network is connected, check app flow
+    await _navigateBasedOnAppState();
+  }
+
+  Future<void> _navigateBasedOnAppState() async {
+    // Check if first time launch
+    final isFirstTime = await SharedPreferencesHelper.isFirstTime();
+
+    if (isFirstTime) {
+      // First time - Show onboarding
+      AppNavigators.pushReplacementNamed(AppRoutesName.onBoardView);
+      return;
+    }
+
+    // Not first time - Check authentication
+    final authToken = await SharedPreferencesHelper.getUserToken();
+
+    if (authToken != null && authToken.isNotEmpty) {
+      // User is logged in - Go to dashboard
+      AppNavigators.pushReplacementNamed(AppRoutesName.dashboardView);
+    } else {
+      // User is not logged in - Go to login
+      AppNavigators.pushReplacementNamed(AppRoutesName.loginView);
+    }
   }
 
   @override
@@ -41,17 +67,16 @@ AppNavigators.pushNamed(AppRoutesName.loginView);/*
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             'assets/images/app_logo.svg'.toAssetSvgImage(
-              height:MediaQuery.widthOf(context) * .2,
+              height: MediaQuery.of(context).size.width * .2,
               width: MediaQuery.of(context).size.width * .2,
             ),
-            // const FlutterLogo(size: 100),
             const SizedBox(height: 24),
             Text(
               'MediDropBox',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 24),
-       
+            const CircularProgressIndicator(),
           ],
         ),
       ),

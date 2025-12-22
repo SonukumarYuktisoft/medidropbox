@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:medidropbox/app/views/OnboardingScreen/view/onboarding_screen.dart';
 import 'package:medidropbox/app/views/splash/splash_screen.dart';
 import 'package:medidropbox/navigator/routes/app_routes/app_routes_name.dart';
 import 'package:medidropbox/navigator/routes/app_routes/app_routes_path.dart';
@@ -16,6 +17,11 @@ class AuthRoutes {
         path: AppRoutesPath.splash,
         name: AppRoutesName.splashView,
         builder: (context, state) =>  SplashScreen(),
+      ),
+       GoRoute(
+        path: AppRoutesPath.onBoard,
+        name: AppRoutesName.onBoardView,
+        builder: (context, state) =>  OnboardingScreen(),
       ),
   ];
 }

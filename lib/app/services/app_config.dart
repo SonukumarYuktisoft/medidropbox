@@ -1,5 +1,5 @@
 class AppConfig {
-String get baseUrl => 'http://10.202.111.46:8080';
+String get baseUrl => 'http://10.0.2.2:8080';
 
   // 1. Registration & Authentication
   String get patientsRegister => '$baseUrl/api/v1/patients/register';

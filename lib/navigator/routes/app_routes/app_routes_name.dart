@@ -17,6 +17,7 @@ class AppRoutesName {
   static const String paymentMethodView = 'payment_method_view';
     static const String bookingConfirmView = 'booking-confirm';
     static const String editprofileView = 'edit-profile';
+    static const String onBoardView = 'on-board-view';
 
 
  
