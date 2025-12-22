@@ -17,22 +17,20 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _checkConnectionAndNavigate() async {
     // Check network status first
-    context.read<NetworkBloc>().add(CheckNetworkStatus());
 
     // Wait for 3 seconds
     await Future.delayed(const Duration(seconds: 3));
 
     if (!mounted) return;
 
-    final networkState = context.read<NetworkBloc>().state;
-
+AppNavigators.pushNamed(AppRoutesName.loginView);/* 
     if (networkState.isConnected) {
-      AppNavigators.pushNamed(AppRoutesName.loginView);
+      
     } else {
-            AppNavigators.pushNamed(AppRoutesName.noInternetConnectionView);
+     AppNavigators.pushNamed(AppRoutesName.noInternetConnectionView);
 
       
-    }
+    } */
   }
 
   @override
@@ -53,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 24),
-            const CircularProgressIndicator(),
+       
           ],
         ),
       ),

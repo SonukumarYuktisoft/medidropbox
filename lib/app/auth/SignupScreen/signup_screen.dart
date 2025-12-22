@@ -1,23 +1,27 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
+import 'package:medidropbox/app/auth/SignupScreen/widgets/address_input_widget.dart';
+import 'package:medidropbox/app/auth/SignupScreen/widgets/emergency_contact_widget.dart';
 import 'package:medidropbox/core/common/CommonTextField.dart';
-import 'package:medidropbox/app/auth/LoginScreen/login_screen.dart';
 import 'package:medidropbox/app/auth/bloc/auth_bloc.dart';
 import 'package:medidropbox/app/auth/bloc/auth_event.dart';
 import 'package:medidropbox/app/auth/bloc/auth_state.dart';
+import 'package:medidropbox/app/auth/bloc/profile_image_cubit.dart';
+import 'package:medidropbox/app/auth/widgets/profile_image_picker_widget.dart';
+import 'package:medidropbox/core/extensions/space_extension.dart';
+import 'package:medidropbox/core/helpers/toast/toast_helper.dart';
+import 'package:medidropbox/core/validator/validator_helper.dart';
 import 'package:medidropbox/navigator/app_navigators/app_navigators.dart';
+import 'package:medidropbox/navigator/routes/app_routes/app_routes_name.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AuthBloc(),
-      child: const SignupView(),
-    );
+    return SignupView();
   }
 }
 
@@ -30,259 +34,321 @@ class SignupView extends StatefulWidget {
 
 class _SignupViewState extends State<SignupView> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
+  final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
+  final _aadharIdController = TextEditingController();
+  final _abhaIdController = TextEditingController();
+
+  File? _profileImage;
+  Map<String, dynamic> _addressData = {};
+  Map<String, dynamic> _emergencyContactData = {};
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _fullNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
+    _aadharIdController.dispose();
+    _abhaIdController.dispose();
     super.dispose();
+  }
+
+  void _handleSignup() {
+    if (_formKey.currentState!.validate()) {
+      // Get the selected image from ProfileImageCubit
+      final profileImageCubit = context.read<ProfileImageCubit>();
+      final selectedImage = profileImageCubit.getSelectedImage();
+
+      // Validate that required data is present
+      if (_addressData.isEmpty ||
+          _addressData['addressLine1']?.isEmpty == true) {
+        ToastHelper.error(
+          message: 'Please fill in the address details',
+          context: context,
+        );
+        return;
+      }
+
+      if (_emergencyContactData.isEmpty ||
+          _emergencyContactData['personName']?.isEmpty == true) {
+        ToastHelper.error(
+          message: 'Please fill in the emergency contact details',
+          context: context,
+        );
+
+        return;
+      }
+
+      context.read<AuthBloc>().add(
+        SignUpRequested(
+          fullName: _fullNameController.text,
+          phone: '+91-${_phoneController.text}',
+          email: _emailController.text,
+          profileImage: selectedImage,
+          aadharId: _aadharIdController.text,
+          abhaId: _abhaIdController.text,
+          address: _addressData,
+          emergencyContacts: [_emergencyContactData],
+        ),
+      );
+    }
+  }
+
+  void _showError(String message) {
+    ToastHelper.error(message: message, context: context);
+  }
+
+  void _showSuccess(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.green),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state.status == AuthStatus.success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Sign up successful!'),
-              backgroundColor: Colors.green,
-            ),
-          );
-          // Navigate to home screen
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+          ToastHelper.success(message: 'Sign up successful!', context: context);
+
+          AppNavigators.pushReplacementNamed(AppRoutesName.dashboardView);
         } else if (state.status == AuthStatus.failure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage ?? 'Sign up failed'),
-              backgroundColor: Colors.red,
-            ),
+          ToastHelper.error(
+            message: state.errorMessage ?? 'Sign up failed',
+            context: context,
           );
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFE8F0FE),
-        body: Stack(
-          children: [
-            SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 40),
-                        const Text(
-                          'Create Account',
-                          style: TextStyle(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: colorScheme.surface,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.arrow_back_ios_new,
+                color: colorScheme.onSurface,
+                size: 20,
+              ),
+            ),
+            onPressed: () => AppNavigators.pop(),
+          ),
+        ),
+        backgroundColor: theme.scaffoldBackgroundColor,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    20.heightBox,
+
+                    // Header
+                    Text(
+                      'Create Account',
+                      style:
+                          textTheme.headlineMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ) ??
+                          const TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF1F2937),
+                          ),
+                    ),
+                    8.heightBox,
+                    Row(
+                      children: [
+                        Text(
+                          'Already have an account? ',
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onSurface.withOpacity(0.6),
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            const Text(
-                              'Already have an account? ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xFF6B7280),
-                              ),
+                        GestureDetector(
+                          onTap: () => AppNavigators.pop(),
+                          child: Text(
+                            'Sign In!',
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.primary,
+                              fontWeight: FontWeight.w600,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                AppNavigators.pop();
-                               
-                              },
-                              child: const Text(
-                                'Sign In!',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF2563EB),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                        const SizedBox(height: 40),
-                        CommonTextField(
-                          controller: _usernameController,
-                          label: 'Username',
-                          hintText: 'Shahanuzzaman Sourav',
-                          prefixIcon: Icon(FontAwesomeIcons.user),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter username';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        CommonTextField(
-                          controller: _emailController,
-                          label: 'Email',
-                          hintText: 'shahanuzzaman23@gmail.com',
-                          prefixIcon: Icon(FontAwesomeIcons.envelope),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter email';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        CommonTextField(
-                          controller: _phoneController,
-                          label: 'Phone',
-                          hintText: '+91 0000 0000 00',
-                          prefixIcon: Icon(FontAwesomeIcons.phone),
-                          keyboardType: TextInputType.phone,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter phone number';
-                            }
-                            return null;
-                          },
-
-                          digitsOnly: true,
-                          maxLength: 10,
-                        ),
-                        const SizedBox(height: 20),
-                        BlocBuilder<AuthBloc, AuthState>(
-                          builder: (context, state) {
-                            return CommonTextField(
-                              controller: _passwordController,
-                              label: 'Password',
-                              hintText: '••••••••',
-                              prefixIcon: Icon(FontAwesomeIcons.lock),
-                              obscureText: state.obscurePassword,
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  state.obscurePassword
-                                      ? Icons.visibility_off_outlined
-                                      : Icons.visibility_outlined,
-                                  color: const Color(0xFF9CA3AF),
-                                ),
-                                onPressed: () {
-                                  context.read<AuthBloc>().add(
-                                        PasswordVisibilityToggled(),
-                                      );
-                                },
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter password';
-                                }
-                                return null;
-                              },
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        BlocBuilder<AuthBloc, AuthState>(
-                          builder: (context, state) {
-                            return CommonTextField(
-                              controller: _confirmPasswordController,
-                              label: 'Confirm password',
-                              hintText: '••••••••',
-                              prefixIcon: Icon(FontAwesomeIcons.lock),
-                              obscureText: state.obscureConfirmPassword,
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  state.obscureConfirmPassword
-                                      ? Icons.visibility_off_outlined
-                                      : Icons.visibility_outlined,
-                                  color: const Color(0xFF9CA3AF),
-                                ),
-                                onPressed: () {
-                                  context.read<AuthBloc>().add(
-                                        ConfirmPasswordVisibilityToggled(),
-                                      );
-                                },
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please confirm password';
-                                }
-                                return null;
-                              },
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 40),
-                        BlocBuilder<AuthBloc, AuthState>(
-                          builder: (context, state) {
-                            return SizedBox(
-                              width: double.infinity,
-                              height: 56,
-                              child: ElevatedButton(
-                                onPressed: state.status == AuthStatus.loading
-                                    ? null
-                                    : () {
-                                        if (_formKey.currentState!.validate()) {
-                                          context.read<AuthBloc>().add(
-                                                SignUpRequested(
-                                                  username: _usernameController.text,
-                                                  email: _emailController.text,
-                                                  phone: _phoneController.text,
-                                                  password: _passwordController.text,
-                                                  confirmPassword: _confirmPasswordController.text,
-                                                ),
-                                              );
-                                        }
-                                      },
-                                style: ElevatedButton.styleFrom(
-                                  // backgroundColor: const Color(0xFF2563EB),
-                                  // foregroundColor: Colors.white,
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: state.status == AuthStatus.loading
-                                    ? const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                          strokeWidth: 2,
-                                        ),
-                                      )
-                                    : const Text(
-                                        'Sign Up',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 40),
                       ],
                     ),
-                  ),
+                    30.heightBox,
+
+                    // Profile Image Picker with BLoC
+                    BlocBuilder<ProfileImageCubit, ProfileImageState>(
+                      builder: (context, state) {
+                        return ProfileImagePickerWidget(
+                          onImageSelected: (image) {
+                            setState(() {
+                              _profileImage = image;
+                            });
+                          },
+                          initialImage: _profileImage,
+                        );
+                      },
+                    ),
+                    30.heightBox,
+
+                    // Personal Information Section
+                    _buildSectionHeader(
+                      'Personal Information',
+                      colorScheme,
+                      textTheme,
+                    ),
+                    16.heightBox,
+
+                    CommonTextField(
+                      controller: _fullNameController,
+                      label: 'Full Name',
+                      hintText: 'John Doe',
+                      prefixIcon: Icon(
+                        FontAwesomeIcons.user,
+                        color: colorScheme.primary.withOpacity(0.7),
+                      ),
+                      validator: ValidatorHelper.isValidUsername,
+                    ),
+                    16.heightBox,
+
+                    CommonTextField(
+                      controller: _emailController,
+                      label: 'Email',
+                      hintText: 'john.doe@example.com',
+                      prefixIcon: Icon(
+                        FontAwesomeIcons.envelope,
+                        color: colorScheme.primary.withOpacity(0.7),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: ValidatorHelper.isValidEmail,
+                    ),
+                    16.heightBox,
+
+                    CommonTextField(
+                      controller: _phoneController,
+                      label: 'Phone',
+                      hintText: '9876543210',
+                      prefixIcon: Icon(
+                        FontAwesomeIcons.phone,
+                        color: colorScheme.primary.withOpacity(0.7),
+                      ),
+                      keyboardType: TextInputType.phone,
+                      digitsOnly: true,
+                      maxLength: 10,
+                      validator: ValidatorHelper.isValidPhoneNumber,
+                    ),
+                    16.heightBox,
+
+                    CommonTextField(
+                      controller: _abhaIdController,
+                      label: 'ABHA ID',
+                      hintText: 'ABHA123456789',
+                      prefixIcon: Icon(
+                        FontAwesomeIcons.idBadge,
+                        color: colorScheme.primary.withOpacity(0.7),
+                      ),
+                      validator: ValidatorHelper.isValidAadhar,
+                    ),
+                    30.heightBox,
+
+                    // Address Section
+                    AddressInputWidget(
+                      onAddressChanged: (address) {
+                        setState(() {
+                          _addressData = address;
+                        });
+                      },
+                    ),
+                    30.heightBox,
+
+                    // Emergency Contact Section
+                    EmergencyContactWidget(
+                      onContactChanged: (contact) {
+                        setState(() {
+                          _emergencyContactData = contact;
+                        });
+                      },
+                    ),
+                    40.heightBox,
+
+                    // Sign Up Button
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: state.status == AuthStatus.loading
+                                ? null
+                                : _handleSignup,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: colorScheme.primary,
+                              foregroundColor: colorScheme.onPrimary,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: state.status == AuthStatus.loading
+                                ? SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: colorScheme.onPrimary,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text(
+                                    'Sign Up',
+                                    style: textTheme.titleMedium?.copyWith(
+                                      color: colorScheme.onPrimary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          ),
+                        );
+                      },
+                    ),
+                    40.heightBox,
+                  ],
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
+  Widget _buildSectionHeader(
+    String title,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    return Text(
+      title,
+      style:
+          textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: colorScheme.onSurface,
+          ) ??
+          const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    );
+  }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 
 class BookingConfirmationView extends StatelessWidget {

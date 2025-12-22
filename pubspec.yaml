@@ -52,6 +52,9 @@ dependencies:
   go_router: ^17.0.1
   flutter_svg: ^2.2.3
   fancy_shimmer_image: ^2.0.3
+  flutter_secure_storage: ^10.0.0
+  pinput: ^6.0.1
+  image_picker: ^1.2.1
   
 
 dev_dependencies:

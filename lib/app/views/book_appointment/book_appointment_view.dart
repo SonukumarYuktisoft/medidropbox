@@ -72,11 +72,8 @@ class BookAppointmentView extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const CircleAvatar(
-                      radius: 30,
-                      backgroundImage: NetworkImage(
-                        "https://images.unsplash.com/photo-1607746882042-944635dfe10e",
-                      ),
+                    "https://images.unsplash.com/photo-1607746882042-944635dfe10e".toCircularImage(
+
                     ),
                     const SizedBox(width: 12),
                     Expanded(

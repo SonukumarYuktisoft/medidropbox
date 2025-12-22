@@ -16,4 +16,9 @@ class AppRoutesPath {
   static const String paymentMethod = '/payment-method';
   static const String bookAppointment = '/book-appointment';
   static const String bookingConfirm = '/booking-confirm';
+   static const String doctorDetails = '/doctor-details';
+    static const String editprofile = '/edit-profile';
+
+
+
 }

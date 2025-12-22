@@ -102,10 +102,8 @@ class DoctorListCard extends StatelessWidget {
       child: Row(
         children: [
           /// DOCTOR IMAGE
-          CircleAvatar(
-            radius: 30,
-            backgroundImage: NetworkImage(image),
-          ),
+         image.toCircularImage(size: 70),
+         
 
           const SizedBox(width: 12),
 

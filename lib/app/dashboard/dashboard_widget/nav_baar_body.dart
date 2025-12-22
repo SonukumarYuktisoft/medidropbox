@@ -2,7 +2,8 @@ import 'package:medidropbox/app/dashboard/bloc/dashboard_bloc.dart';
 import 'package:medidropbox/app/dashboard/dashboard_widget/dashboard_top_baar.dart';
 import 'package:medidropbox/app/dashboard/tabs/doctor/doctor_tab.dart';
 import 'package:medidropbox/app/dashboard/tabs/home/home_tab.dart';
-import 'package:medidropbox/app/dashboard/tabs/store/store_tab.dart';
+import 'package:medidropbox/app/dashboard/tabs/appointment/appointment_tab.dart';
+import 'package:medidropbox/app/dashboard/tabs/profile/profile_tab.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 
 
@@ -16,9 +17,10 @@ class NavBaarBody extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
+            if(state.tabPosition==0||state.tabPosition==1)
             DashboardTopBaar(),
            10.heightBox,
-            Expanded(child: [HomeTab(),DoctorTab(),StoreTab()][state.tabPosition])
+            Expanded(child: [HomeTab(),DoctorTab(),AppointmentTab(),ProfileTab()][state.tabPosition])
           ],
         );
       },

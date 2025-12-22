@@ -1,222 +1,227 @@
-
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:medidropbox/core/common/CommonTextField.dart';
-import 'package:medidropbox/core/helpers/app_export.dart';
-
 import 'package:medidropbox/app/auth/bloc/auth_bloc.dart';
 import 'package:medidropbox/app/auth/bloc/auth_event.dart';
 import 'package:medidropbox/app/auth/bloc/auth_state.dart';
+import 'package:medidropbox/app/auth/OtpScreen/otp_screen.dart';
+import 'package:medidropbox/core/common/app_snackbaar.dart';
+import 'package:medidropbox/core/extensions/space_extension.dart';
+import 'package:medidropbox/core/extensions/url_launcher_extension.dart';
+import 'package:medidropbox/core/helpers/app_export.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+import 'package:medidropbox/core/validator/validator_helper.dart';
+import 'package:medidropbox/navigator/app_navigators/app_navigators.dart';
+import 'package:medidropbox/navigator/routes/app_routes/app_routes_path.dart';
+
+class PhoneLoginScreen extends StatelessWidget {
+  const PhoneLoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (_) => AuthBloc(), child: const LoginView());
+    return PhoneLoginView();
   }
 }
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class PhoneLoginView extends StatefulWidget {
+  const PhoneLoginView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<PhoneLoginView> createState() => _PhoneLoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _PhoneLoginViewState extends State<PhoneLoginView> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _phoneController = TextEditingController();
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
+    _phoneController.dispose();
     super.dispose();
+  }
+
+  void _handleGenerateOtp() {
+    if (_formKey.currentState!.validate()) {
+      final phone = '+91-${_phoneController.text}';
+      context.read<AuthBloc>().add(GenerateOtpRequested(phone: phone));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state.status == AuthStatus.success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Login successful!'),
-              backgroundColor: Colors.green,
+        if (state.status == AuthStatus.otpSent) {
+          // Navigate to OTP screen
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  OtpScreen(phoneNumber: '+91-${_phoneController.text}'),
             ),
           );
-          AppNavigators.pushNamed(AppRoutesName.dashboardView);
-          // Navigate to home screen
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()));
         } else if (state.status == AuthStatus.failure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage ?? 'Login failed'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          AppSnackbar.showError( state.errorMessage ?? 'Failed to send OTP');
+         
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFE8F0FE),
-        body: Stack(
-          children: [
-            SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 80),
-                        const Text(
-                          'Sign In',
-                          style: TextStyle(
+        backgroundColor: theme.scaffoldBackgroundColor,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    40.heightBox,
+                    // Logo or Icon
+                    // Center(child: AuthConstantsString.authLogo.toCircularSvgAssetImage(
+                    //   size: 100
+                    // )),
+                    Icon(Icons.call,size: 60),
+                    40.heightBox,
+
+                    Text(
+                      'Welcome Back',
+                      style:
+                          textTheme.headlineMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ) ??
+                          const TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF1F2937),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            const Text(
-                              "Don't have an account?",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xFF6B7280),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Enter your phone number to receive OTP',
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurface.withOpacity(0.6),
+                      ),
+                    ),
+                    40.heightBox,
+
+                    // Phone Number Input
+                    CommonTextField(
+                      controller: _phoneController,
+                      label: 'Phone Number',
+                      hintText: '9876543210',
+                      prefixIcon: Icon(
+                        FontAwesomeIcons.phone,
+                        color: colorScheme.primary.withOpacity(0.7),
+                      ),
+                      keyboardType: TextInputType.phone,
+                      digitsOnly: true,
+                      maxLength: 10,
+                      validator:ValidatorHelper.isValidPhoneNumber
+                    ),
+                    40.heightBox,
+
+                    // Generate OTP Button
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: state.status == AuthStatus.loading
+                                ? null
+                                : _handleGenerateOtp,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: colorScheme.primary,
+                              foregroundColor: colorScheme.onPrimary,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                            // TextButton(onPressed: () {
-                            //   context.go(AppRoutes.signupScreen);
-                            // }, child: Text('Sign Up', style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: context.theme.primaryColor))),
-  
-                            GestureDetector(
-                              onTap: () {
-                                // Navigator.pushReplacement(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => const SignupScreen(),
-                                //   ),
-                                // );
-                                AppNavigators.pushNamed(AppRoutesName.signupView);
-                              },
-                              child: const Text(
-                                'Sign Up!',
+                            child: state.status == AuthStatus.loading
+                                ? SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: colorScheme.onPrimary,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text(
+                                    'Send OTP',
+                                    style: textTheme.titleMedium?.copyWith(
+                                      color: colorScheme.onPrimary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          ),
+                        );
+                      },
+                    ),
+                    20.heightBox,
+
+                    // Sign Up Link
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Don't have an account? ",
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onSurface.withOpacity(0.6),
+                          ),
+                        ),
+                      TextButton(onPressed:() {
+                         AppNavigators.push(AppRoutesPath.signup);
+                      } , child: const Text('Sign up')),
+                        
+                      ],
+                    ),
+                    40.heightBox,
+
+                    // Terms and Privacy
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            style: textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurface.withOpacity(0.6),
+                            ),
+                            children: [
+                              const TextSpan(
+                                text: 'By continuing, you agree to our ',
+                              ),
+                              TextSpan(
+                                text: 'Terms of Service',
                                 style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF2563EB),
+                                  color: colorScheme.primary,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 60),
-                        CommonTextField(
-                          controller: _emailController,
-                          label: 'Email',
-                          hintText: 'shahanuzzaman23@gmail.com',
-                          prefixIcon: Icon(FontAwesomeIcons.envelope),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter email';
-                            }
-                            return null;
-                          },
-                          focusNode: FocusNode(canRequestFocus: true),
-                        ),
-                        const SizedBox(height: 20),
-                        BlocBuilder<AuthBloc, AuthState>(
-                          builder: (context, state) {
-                            return CommonTextField(
-                              controller: _passwordController,
-                              label: 'Password',
-                              hintText: '••••••••',
-                              prefixIcon: Icon(FontAwesomeIcons.lock),
-                              obscureText: state.obscurePassword,
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  state.obscurePassword
-                                      ? Icons.visibility_off_outlined
-                                      : Icons.visibility_outlined,
-                                  color: const Color(0xFF9CA3AF),
+                              const TextSpan(text: ' and '),
+                              TextSpan(
+                                text: 'Privacy Policy',
+                                style: TextStyle(
+                                  color: colorScheme.primary,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                onPressed: () {
-                                  context.read<AuthBloc>().add(
-                                    PasswordVisibilityToggled(),
-                                  );
-                                },
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter password';
-                                }
-                                return null;
-                              },
-                            );
-                          },
+                            ],
+                          ),
                         ),
-                       
-                        const SizedBox(height: 40),
-                        BlocBuilder<AuthBloc, AuthState>(
-                          builder: (context, state) {
-                            return SizedBox(
-                              width: double.infinity,
-                              height: 56,
-                              child: ElevatedButton(
-                                onPressed: state.status == AuthStatus.loading
-                                    ? null
-                                    : () {
-                                        if (_formKey.currentState!.validate()) {
-                                          context.read<AuthBloc>().add(
-                                            LoginRequested(
-                                              email: _emailController.text,
-                                              password:
-                                                  _passwordController.text,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: state.status == AuthStatus.loading
-                                    ? const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                          strokeWidth: 2,
-                                        ),
-                                      )
-                                    : const Text(
-                                        'Sign In',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 40),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

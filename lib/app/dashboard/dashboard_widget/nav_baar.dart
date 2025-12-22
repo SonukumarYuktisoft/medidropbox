@@ -40,6 +40,10 @@ class NavBaar extends StatelessWidget {
                  icon: Icon(Icons.medical_services_outlined),
                 label: "Dr.",
               ),
+               BottomNavigationBarItem(
+                 icon: Icon(Icons.calendar_month_outlined),
+                label: "Booking",
+              ),
               BottomNavigationBarItem(
                   icon: Icon(Icons.person_outline),
               

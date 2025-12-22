@@ -10,7 +10,7 @@ class AuthRoutes {
      GoRoute(
         path: AppRoutesPath.login,
         name: AppRoutesName.loginView,
-        builder: (context, state) => const LoginView(),
+        builder: (context, state) => const PhoneLoginScreen(),
       ),
       GoRoute(
         path: AppRoutesPath.splash,
