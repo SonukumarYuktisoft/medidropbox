@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medidropbox/core/common/app_snackbaar.dart';
 import 'package:medidropbox/core/utility/themes/app_theme.dart';
 import 'package:medidropbox/core/utility/utility_screen/network/bloc/network_bloc.dart';
 import 'package:medidropbox/navigator/app_blocs/app_blocs.dart';
@@ -22,21 +23,10 @@ class MyApp extends StatelessWidget {
       child: BlocListener<NetworkBloc, NetworkState>(
         listener: (context, state) {
           if (state.status == NetworkStatus.disconnected) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('No internet connection'),
-                backgroundColor: Colors.red,
-                duration: Duration(seconds: 2),
-              ),
-            );
+            AppSnackbar.showError('No internet connection');
+            
           } else if (state.status == NetworkStatus.connected) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Connected to internet'),
-                backgroundColor: Colors.green,
-                duration: Duration(seconds: 2),
-              ),
-            );
+            AppSnackbar.showSuccess('Connected to internet');
           }
         },
         child: MaterialApp.router(

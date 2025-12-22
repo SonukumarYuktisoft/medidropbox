@@ -1,14 +1,14 @@
 
-import 'package:medidropbox/app/data/network/api_response_model.dart';
+import 'package:medidropbox/app/services/api_model.dart';
 
 class BaseMockRepository {
-  Future<ApiResponse> mockResponse({
+  Future<ApiModel> mockResponse({
     required bool status,
     required String message,
     dynamic data,
     Duration delay = const Duration(milliseconds: 300),
   }) async {
     await Future.delayed(delay);
-    return ApiResponse(status: status, message: message, data: data);
+    return ApiModel(status: status, message: message, data: data);
   }
 }
