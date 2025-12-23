@@ -1,16 +1,14 @@
 class AppConfig {
-String get baseUrl => 'http://10.0.2.2:8080';
+//  String get baseUrl => 'http://10.0.2.2:8080';
+ static const String  baseUrl = 'http://localhost:8080';
+//String get baseUrl => 'http://192.168.31.70:8080';
 
   // 1. Registration & Authentication
-  String get patientsRegister => '$baseUrl/api/v1/patients/register';
-  String get generateOtp => '$baseUrl/api/v1/otp/generate';
-  String get verifyOtpAndLogin => '$baseUrl/api/v1/otp/verify';
+  static const String  patientsRegister = '$baseUrl/api/v1/patients/register';
+  static const String  generateOtp = '$baseUrl/api/v1/otp/generate';
+  static const String  verifyOtpAndLogin = '$baseUrl/api/v1/otp/verify';
 
-  // 2. Browse Hospitals
-  String get getAllHospitals => '$baseUrl/api/v1/hospitals';
-  String getHospitalById(String hospitalId) => '$baseUrl/api/v1/hospitals/$hospitalId';
+  // 2. Browse Hospitals 
+  static const String  getAllHospitals = '$baseUrl/api/v1/hospitals';
 
-  // 3. Browse Doctors
-  String get getAllDoctors => '$baseUrl/api/v1/doctors';
-  String getDoctorById(String doctorId) => '$baseUrl/api/v1/doctors/$doctorId';
 }

@@ -9,7 +9,6 @@ import 'package:medidropbox/app/services/shared_preferences_helper.dart';
 
 class LoginRepo implements AuthRepo {
   final ApiService _apiService = ApiService();
-  final AppConfig _appConfig = AppConfig();
 
   @override
   Future<Map<String, dynamic>> generateOtp({
@@ -17,7 +16,7 @@ class LoginRepo implements AuthRepo {
   }) async {
     try {
       final response = await _apiService.requestPostForApi(
-        url: _appConfig.generateOtp,
+        url: AppConfig.generateOtp,
         dictParameter: {'phone': phone},
         authToken: false,
       );
@@ -62,7 +61,7 @@ class LoginRepo implements AuthRepo {
   }) async {
     try {
       final response = await _apiService.requestPostForApi(
-        url: _appConfig.verifyOtpAndLogin,
+        url: AppConfig.verifyOtpAndLogin,
         dictParameter: {
           'phone': phone,
           'otp': otp,

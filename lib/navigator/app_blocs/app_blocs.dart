@@ -3,9 +3,11 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medidropbox/app/dashboard/bloc/dashboard_bloc.dart';
+import 'package:medidropbox/app/dashboard/tabs/home/bloc/home_bloc.dart';
 import 'package:medidropbox/core/utility/utility_screen/network/bloc/network_bloc.dart';
 import 'package:medidropbox/app/views/OnboardingScreen/bloc/onboarding_bloc.dart';
 import 'package:medidropbox/app/auth/bloc/auth_bloc.dart';
+import 'package:medidropbox/navigator/injector/repo_injectors.dart';
 import 'package:provider/single_child_widget.dart';
 
 class AppBlocs {
@@ -15,6 +17,7 @@ class AppBlocs {
     BlocProvider(create: (context) => OnboardingBloc()),
    // BlocProvider(create: (_) => LoginBloc()),
     BlocProvider(create: (_) => DashboardBloc()),
+    BlocProvider(create: (_) => HomeBloc(RepoInjectors.loginRepo)),
   
   ];
 }

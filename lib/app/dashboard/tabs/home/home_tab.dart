@@ -13,7 +13,6 @@ class HomeTab extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          
           BannerCard(),
           15.heightBox,
           HospitalCard(),

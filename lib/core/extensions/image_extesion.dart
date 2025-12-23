@@ -174,7 +174,7 @@ extension SafeFancyImageExtension on String? {
       height: height,
       color: Colors.red.shade50,
       child: Icon(
-        Icons.shopping_bag_outlined,
+        Icons.medical_services,
         size: (height * 0.5).clamp(16.0, 60.0),
         color: Colors.grey,
         shadows: [
@@ -199,7 +199,7 @@ extension SafeFancyImageExtension on String? {
         border: Border.all(color: Colors.grey.shade300),
       ),
       child: Icon(
-        Icons.shopping_bag_outlined,
+        Icons.medical_services,
         size: (size * 0.5).clamp(16.0, 40.0),
         color: Colors.grey.shade500,
       ),
@@ -220,7 +220,7 @@ extension SafeFancyImageExtension on String? {
         border: Border.all(color: Colors.grey.shade300),
       ),
       child: Icon(
-        Icons.shopping_bag_outlined,
+        Icons.medical_services,
         size: ((width + height) / 4).clamp(16.0, 60.0),
         color: Colors.grey.shade500,
       ),
@@ -241,7 +241,7 @@ extension SafeFancyImageExtension on String? {
         border: Border.all(color: Colors.grey.shade300),
       ),
       child: Icon(
-        Icons.shopping_bag_outlined,
+        Icons.medical_services,
         size: ((width + height) / 4).clamp(16.0, 60.0),
         color: Colors.grey.shade500,
       ),
@@ -262,7 +262,7 @@ extension SafeFancyImageExtension on String? {
         border: Border.all(color: Colors.grey.shade300),
       ),
       child: Icon(
-        Icons.shopping_bag_outlined,
+        Icons.medical_services,
         size: ((width + height) / 4).clamp(16.0, 60.0),
         color: Colors.grey.shade500,
       ),
@@ -278,7 +278,7 @@ extension SafeFancyImageExtension on String? {
         border: Border.all(color: Colors.grey.shade300),
       ),
       child: Icon(
-        Icons.shopping_bag_outlined,
+        Icons.medical_services,
         size: ((width + height) / 4).clamp(16.0, 60.0),
         color: Colors.grey.shade500,
       ),

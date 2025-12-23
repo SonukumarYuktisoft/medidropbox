@@ -45,7 +45,7 @@ class SignupRepo implements AuthRepo {
         );
 
         response = await _apiService.requestPostWithFormData(
-          url: _appConfig.patientsRegister,
+          url: AppConfig.patientsRegister,
           formData: formData,
           authToken: false,
           onSendProgress: (sent, total) {
@@ -55,7 +55,7 @@ class SignupRepo implements AuthRepo {
       } else {
         // No image, use regular JSON post
         response = await _apiService.requestPostForApi(
-          url: _appConfig.patientsRegister,
+          url: AppConfig.patientsRegister,
           dictParameter: data,
           authToken: false,
         );
@@ -100,7 +100,7 @@ class SignupRepo implements AuthRepo {
   }) async {
     try {
       final response = await _apiService.requestPostForApi(
-        url: _appConfig.generateOtp,
+        url: AppConfig.generateOtp,
         dictParameter: {'phone': phone},
         authToken: false,
       );
@@ -145,7 +145,7 @@ class SignupRepo implements AuthRepo {
   }) async {
     try {
       final response = await _apiService.requestPostForApi(
-        url: _appConfig.verifyOtpAndLogin,
+        url: AppConfig.verifyOtpAndLogin,
         dictParameter: {
           'phone': phone,
           'otp': otp,

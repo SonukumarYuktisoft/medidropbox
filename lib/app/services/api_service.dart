@@ -25,6 +25,7 @@ class ApiService {
     if (!hasInternet) {
       log("❌ No Internet Connection");
       if (context != null) {
+        // ignore: use_build_context_synchronously
         ToastHelper.warning(message: "No Internet Connection", context: context);
       }
       return Response(
