@@ -1,4 +1,5 @@
 import 'package:medidropbox/app/dashboard/tabs/home/bloc/home_bloc.dart';
+import 'package:medidropbox/app/models/hospitals/all_hospital_model.dart';
 import 'package:medidropbox/core/extensions/button_extension.dart';
 import 'package:medidropbox/core/extensions/container_extension.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
@@ -30,7 +31,7 @@ class HospitalCard extends StatelessWidget {
             return DataNotFound();
           }
           return SizedBox(
-          height: 260,
+          height: 310,
           child: ListView.separated(
             itemCount: state.allHospitalList!.length,
             scrollDirection: Axis.horizontal,
@@ -38,10 +39,7 @@ class HospitalCard extends StatelessWidget {
             separatorBuilder: (context, index) => SizedBox(width: 15,),
             itemBuilder: (context, index) {
               var data = state.allHospitalList![index];
-              return _card(image: data.images!.first, name: data.name.toString(),
-               location: "${data.address!.state}, ${data.address!.country},", 
-               rating: 1,
-                category: data.services!.first, fee: '0');
+              return _card(data);
             },
           ),
         );
@@ -50,160 +48,172 @@ class HospitalCard extends StatelessWidget {
       },
     );
   }
-/* _card(
-                image:
-                    "https://images.unsplash.com/photo-1586773860418-d37222d8fce3",
-                name: "Woodland Hospital",
-                location: "New Delhi, India",
-                rating: 4.5,
-                category: "Hospital",
-                fee: "₹500 / visit",
-              ), */
-  Widget _card({
-    required String image,
-    required String name,
-    required String location,
-    required double rating,
-    required String category,
-    required String fee,
-  }) {
-    return Container(
-      width: 220,
 
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 4)),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          /// IMAGE
-          Stack(
-            children: [
-              image.toTopRadiusImage(
-                height: 120,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                radius: 18,
-              ),
-
-              /// Favourite icon
+  Widget _card(AllHospitalModel data) {
+  return Container(
+    width: 220,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(18),
+      boxShadow: const [
+        BoxShadow(
+          color: Colors.black12,
+          blurRadius: 8,
+          offset: Offset(0, 4),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        /// IMAGE WITH EMERGENCY BADGE
+        Stack(
+          children: [
+            data.images!.first.toTopRadiusImage(
+              height: 140,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              radius: 18,
+            ),
+            // Emergency Badge (if available)
+            if (data.emergencyAvailable == true)
               Positioned(
                 top: 10,
                 right: 10,
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.favorite_border,
-                    size: 18,
-                    color: Colors.blue,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.local_hospital, color: Colors.white, size: 14),
+                    const SizedBox(width: 4),
+                    "Emergency".toHeadingText(
+                      fontSize: 11,
+                      color: Colors.white,
+                      appFontStyle: AppFontStyle.semiBold,
+                    ),
+                  ],
+                ).radiusContainerWithShadow(
+                  radius: 15,
+                  color: Colors.red,
+                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 ),
               ),
+          ],
+        ),
+
+        const SizedBox(height: 12),
+
+        /// HOSPITAL NAME
+        data.name.toString().toLimitLineText(
+          maxLines: 1,
+          fontSize: 15,
+          appFontStyle: AppFontStyle.bold,
+        ).paddingHorizontal(12),
+
+        const SizedBox(height: 6),
+
+        /// LOCATION
+        Row(
+          children: [
+            Icon(
+              Icons.location_on,
+              size: 14,
+              color: Colors.red.shade400,
+              shadows: toIconShadow(),
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: "${data.address!.city}, ${data.address!.state}".toLimitLineText(
+                maxLines: 1,
+                appFontStyle: AppFontStyle.regular,
+                fontSize: 12,
+                color: Colors.grey.shade600,
+              ),
+            ),
+          ],
+        ).paddingHorizontal(12),
+
+        const SizedBox(height: 8),
+
+        /// SERVICES COUNT (Optional)
+        if (data.services != null && data.services!.isNotEmpty)
+          Row(
+            children: [
+              Icon(Icons.medical_services_outlined, size: 14, color: Colors.blue.shade600),
+              const SizedBox(width: 4),
+              "${data.services!.length} Services Available".toHeadingText(
+                fontSize: 11,
+                color: Colors.grey.shade600,
+                appFontStyle: AppFontStyle.regular,
+              ),
             ],
+          ).paddingHorizontal(12),
+
+        const SizedBox(height: 10),
+
+        /// FACILITIES CHIPS
+        if (data.facilities != null && data.facilities!.isNotEmpty)
+          SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: data.facilities!.take(3).map((facility) {
+                return Container(
+                  margin: EdgeInsets.only(
+                    right: facility == data.facilities!.take(3).last ? 0 : 8,
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.blue.shade100),
+                  ),
+                  child: facility.toHeadingText(
+                    fontSize: 10,
+                    color: Colors.blue.shade700,
+                    appFontStyle: AppFontStyle.medium,
+                  ),
+                );
+              }).toList(),
+            ),
           ),
 
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        const SizedBox(height: 12),
+
+        /// FOUNDED YEAR (Optional Footer)
+        if (data.foundedOn != null)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade50,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(18),
+                bottomRight: Radius.circular(18),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                /// CATEGORY + RATING
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        category,
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        const Icon(Icons.star, size: 14, color: Colors.amber),
-                        const SizedBox(width: 4),
-                        Text(
-                          rating.toString(),
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 8),
-
-                /// HOSPITAL NAME
-                Text(
-                  name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                const SizedBox(height: 6),
-
-                /// LOCATION
                 Row(
                   children: [
-                    const Icon(Icons.location_on, size: 14, color: Colors.grey),
+                    Icon(Icons.calendar_today, size: 11, color: Colors.grey.shade600),
                     const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        location,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
-                      ),
+                    "Since ${DateTime.parse(data.foundedOn.toString()).year}".toHeadingText(
+                      fontSize: 10,
+                      color: Colors.grey.shade600,
+                      appFontStyle: AppFontStyle.regular,
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 8),
-
-                /// FEES
-                Text(
-                  fee,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Icon(Icons.arrow_forward_ios, size: 12, color: Colors.grey.shade400),
               ],
             ),
           ),
-        ],
-      ),
-    ).asButton(
-      onTap: () {
-        AppNavigators.pushNamed(AppRoutesName.hospitalDetailsView);
-      },
-    );
-  }
+      ],
+    ),
+  ).asButton(
+    onTap: () {
+      AppNavigators.pushNamed(AppRoutesName.hospitalDetailsView);
+    },
+  );
+}
 }
