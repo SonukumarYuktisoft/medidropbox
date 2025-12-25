@@ -9,10 +9,12 @@ import 'package:medidropbox/navigator/app_navigators/app_key.dart';
 import 'package:medidropbox/navigator/injector/repo_locators.dart';
 import 'package:medidropbox/navigator/routes/app_go_routes/app_routes.dart';
 
-
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  RepoLocators.locate(GetItEnvironment.prod);
+
+  // 🔥🔥🔥 THIS IS THE FIX
+  await RepoLocators.locate(GetItEnvironment.prod);
+
   runApp(const MyApp());
 }
 
@@ -27,13 +29,12 @@ class MyApp extends StatelessWidget {
         listener: (context, state) {
           if (state.status == NetworkStatus.disconnected) {
             AppSnackbar.showError('No internet connection');
-            
           } else if (state.status == NetworkStatus.connected) {
             AppSnackbar.showSuccess('Connected to internet');
           }
         },
         child: MaterialApp.router(
-           scaffoldMessengerKey: AppKey.scaffoldMessengerKey,
+          scaffoldMessengerKey: AppKey.scaffoldMessengerKey,
           title: "MediDropBox",
           theme: AppTheme.lightTheme,
           routerConfig: AppRouter.router,

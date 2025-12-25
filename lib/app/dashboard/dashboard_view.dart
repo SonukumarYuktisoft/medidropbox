@@ -8,17 +8,16 @@ class DashboardView extends StatefulWidget {
   @override
   State<DashboardView> createState() => _DashboardViewState();
 }
+
 class _DashboardViewState extends State<DashboardView> {
   @override
   void initState() {
     context.read<HomeBloc>().add(OnGetAllHospital());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: NavBaarBody(),
-      bottomNavigationBar: NavBaar(),
-    );
+    return Scaffold(body: NavBaarBody(), bottomNavigationBar: NavBaar());
   }
 }

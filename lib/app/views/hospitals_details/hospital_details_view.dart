@@ -1,8 +1,20 @@
+import 'package:medidropbox/app/views/hospitals_details/bloc/hospital_detail_bloc.dart';
 import 'package:medidropbox/core/common/book_appointment_btn.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 
-class HospitalDetailsView extends StatelessWidget {
+class HospitalDetailsView extends StatefulWidget {
   const HospitalDetailsView({super.key});
+
+  @override
+  State<HospitalDetailsView> createState() => _HospitalDetailsViewState();
+}
+
+class _HospitalDetailsViewState extends State<HospitalDetailsView> {
+  @override
+  void initState() {
+    // context.read<HospitalDetailBloc>().add(OnHospitalDetails());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +22,9 @@ class HospitalDetailsView extends StatelessWidget {
       backgroundColor: const Color(0xffF4F6FA),
 
       /// STICKY CTA
-      bottomNavigationBar: BookAppointmentBtn(),/* Container(
+      bottomNavigationBar: BookAppointmentBtn(),
+
+      /* Container(
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -41,7 +55,6 @@ class HospitalDetailsView extends StatelessWidget {
           ),
         ),
       ), */
-
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -53,7 +66,7 @@ class HospitalDetailsView extends StatelessWidget {
                   height: MediaQuery.heightOf(context) / 2.7,
                   fit: BoxFit.cover,
                 ),
-        
+
                 /// GRADIENT
                 Container(
                   height: MediaQuery.heightOf(context) / 2.7,
@@ -68,22 +81,18 @@ class HospitalDetailsView extends StatelessWidget {
                     ),
                   ),
                 ),
-        
+
                 /// BACK BUTTON
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: AppBackBtn(),
-                ),
+                Padding(padding: const EdgeInsets.all(12), child: AppBackBtn()),
               ],
             ),
-        
+
             /// CONTENT
             Container(
               padding: const EdgeInsets.all(16),
               decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(28)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,8 +104,7 @@ class HospitalDetailsView extends StatelessWidget {
                       _chip("Hospital"),
                       Row(
                         children: [
-                          const Icon(Icons.star,
-                              color: Colors.amber, size: 16),
+                          const Icon(Icons.star, color: Colors.amber, size: 16),
                           4.widthBox,
                           "3.8".toHeadingText(
                             appFontStyle: AppFontStyle.semiBold,
@@ -107,57 +115,65 @@ class HospitalDetailsView extends StatelessWidget {
                             fontSize: 12,
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
-                      
+
                   12.heightBox,
-                      
+
                   /// NAME
-                  "Woodland Multispeciality Hospital"
-                      .toHeadingText(
-                          fontSize: 20,
-                          appFontStyle: AppFontStyle.bold),
-                      
+                  "Woodland Multispeciality Hospital".toHeadingText(
+                    fontSize: 20,
+                    appFontStyle: AppFontStyle.bold,
+                  ),
+
                   8.heightBox,
-                      
+
                   /// LOCATION
                   Row(
                     children: [
-                      const Icon(Icons.location_on,
-                          size: 16, color: Colors.grey),
+                      const Icon(
+                        Icons.location_on,
+                        size: 16,
+                        color: Colors.grey,
+                      ),
                       6.widthBox,
-                      "Sector 62, Noida, Uttar Pradesh"
-                          .toHeadingText(color: Colors.grey),
+                      "Sector 62, Noida, Uttar Pradesh".toHeadingText(
+                        color: Colors.grey,
+                      ),
                     ],
                   ),
-                      
+
                   20.heightBox,
-                      
+
                   /// QUICK INFO
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       _InfoTile(
-                          icon: Icons.local_hospital,
-                          title: "Departments",
-                          value: "24+"),
+                        icon: Icons.local_hospital,
+                        title: "Departments",
+                        value: "24+",
+                      ),
                       _InfoTile(
-                          icon: Icons.people,
-                          title: "Doctors",
-                          value: "120+"),
+                        icon: Icons.people,
+                        title: "Doctors",
+                        value: "120+",
+                      ),
                       _InfoTile(
-                          icon: Icons.schedule,
-                          title: "Open",
-                          value: "24x7"),
+                        icon: Icons.schedule,
+                        title: "Open",
+                        value: "24x7",
+                      ),
                     ],
                   ),
-                      
+
                   24.heightBox,
-                      
+
                   /// FACILITIES
                   "Facilities".toHeadingText(
-                      appFontStyle: AppFontStyle.semiBold),
+                    appFontStyle: AppFontStyle.semiBold,
+                  ),
                   10.heightBox,
                   Wrap(
                     spacing: 10,
@@ -170,42 +186,46 @@ class HospitalDetailsView extends StatelessWidget {
                       _FacilityChip(Icons.local_cafe, "Cafeteria"),
                     ],
                   ),
-                      
+
                   24.heightBox,
-                      
+
                   /// WORKING HOURS
                   _sectionCard(
                     icon: Icons.schedule,
                     title: "Working Hours",
                     subtitle: "Open 24x7 (Emergency Available)",
                   ),
-                      
+
                   24.heightBox,
-                      
+
                   /// DOCTORS PREVIEW
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       "Available Doctors".toHeadingText(
-                          appFontStyle: AppFontStyle.semiBold),
+                        appFontStyle: AppFontStyle.semiBold,
+                      ),
                       "View All".toHeadingText(
-                          color: Colors.blue, fontSize: 13),
+                        color: Colors.blue,
+                        fontSize: 13,
+                      ),
                     ],
                   ),
-                      
+
                   12.heightBox,
                   _DoctorMiniCard(
-                      name: "Dr. Serena Gomes",
-                      speciality: "Medicine Specialist"),
+                    name: "Dr. Serena Gomes",
+                    speciality: "Medicine Specialist",
+                  ),
                   _DoctorMiniCard(
-                      name: "Dr. Alena Khan",
-                      speciality: "Cardiologist"),
-                      
+                    name: "Dr. Alena Khan",
+                    speciality: "Cardiologist",
+                  ),
+
                   24.heightBox,
-                      
+
                   /// MAP
-                  "Location".toHeadingText(
-                      appFontStyle: AppFontStyle.semiBold),
+                  "Location".toHeadingText(appFontStyle: AppFontStyle.semiBold),
                   10.heightBox,
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
@@ -215,16 +235,17 @@ class HospitalDetailsView extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                      
+
                   24.heightBox,
-                      
+
                   /// REVIEWS
                   "Patient Reviews".toHeadingText(
-                      appFontStyle: AppFontStyle.semiBold),
+                    appFontStyle: AppFontStyle.semiBold,
+                  ),
                   12.heightBox,
                   _ReviewCard(),
                   _ReviewCard(),
-                      
+
                   40.heightBox,
                 ],
               ),
@@ -250,10 +271,11 @@ class HospitalDetailsView extends StatelessWidget {
     );
   }
 
-  Widget _sectionCard(
-      {required IconData icon,
-      required String title,
-      required String subtitle}) {
+  Widget _sectionCard({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+  }) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -267,11 +289,10 @@ class HospitalDetailsView extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              title.toHeadingText(
-                  appFontStyle: AppFontStyle.semiBold),
+              title.toHeadingText(appFontStyle: AppFontStyle.semiBold),
               subtitle.toHeadingText(color: Colors.grey),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -285,8 +306,11 @@ class _InfoTile extends StatelessWidget {
   final String title;
   final String value;
 
-  const _InfoTile(
-      {required this.icon, required this.title, required this.value});
+  const _InfoTile({
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -334,8 +358,7 @@ class _DoctorMiniCard extends StatelessWidget {
   final String name;
   final String speciality;
 
-  const _DoctorMiniCard(
-      {required this.name, required this.speciality});
+  const _DoctorMiniCard({required this.name, required this.speciality});
 
   @override
   Widget build(BuildContext context) {
@@ -356,12 +379,10 @@ class _DoctorMiniCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              name.toHeadingText(
-                  appFontStyle: AppFontStyle.semiBold),
-              speciality.toHeadingText(
-                  fontSize: 12, color: Colors.grey),
+              name.toHeadingText(appFontStyle: AppFontStyle.semiBold),
+              speciality.toHeadingText(fontSize: 12, color: Colors.grey),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -381,8 +402,7 @@ class _ReviewCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          "Rahul Sharma".toHeadingText(
-              appFontStyle: AppFontStyle.semiBold),
+          "Rahul Sharma".toHeadingText(appFontStyle: AppFontStyle.semiBold),
           6.heightBox,
           "Very good hospital with supportive staff and experienced doctors."
               .toHeadingText(color: Colors.grey, fontSize: 13),

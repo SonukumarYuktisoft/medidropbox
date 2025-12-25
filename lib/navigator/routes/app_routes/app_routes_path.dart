@@ -16,10 +16,10 @@ class AppRoutesPath {
   static const String paymentMethod = '/payment-method';
   static const String bookAppointment = '/book-appointment';
   static const String bookingConfirm = '/booking-confirm';
-   static const String doctorDetails = '/doctor-details';
-    static const String editprofile = '/edit-profile';
+  static const String doctorDetails = '/doctor-details';
+  static const String editprofile = '/edit-profile';
+  static const String bookingDetails = '/booking-details';
+  static const String createAppointment = '/create-Appointment-view';
 
-    static const String onBoard = '/onboard';
-
-
+  static const String onBoard = '/onboard';
 }

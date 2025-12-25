@@ -7,8 +7,7 @@ abstract class DashboardEvent extends Equatable {
   List<Object> get props => [];
 }
 
-
-class OnChangedTapPosition extends DashboardEvent{
+class OnChangedTapPosition extends DashboardEvent {
   const OnChangedTapPosition(this.tabPosition);
   final int tabPosition;
   @override

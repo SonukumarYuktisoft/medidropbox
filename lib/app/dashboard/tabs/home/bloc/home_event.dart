@@ -6,4 +6,11 @@ abstract class HomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OnGetAllHospital extends HomeEvent{}
+class OnGetAllHospital extends HomeEvent {}
+
+class OnSelecteHospitalData extends HomeEvent {
+  const OnSelecteHospitalData(this.data);
+  final AllHospitalModel data;
+  @override
+  List<Object> get props => [data];
+}
