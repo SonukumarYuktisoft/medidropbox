@@ -1,3 +1,4 @@
+import 'package:medidropbox/app/services/shared_preferences_helper.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 
 class ProfileTab extends StatelessWidget {
@@ -23,10 +24,10 @@ class ProfileTab extends StatelessWidget {
                 children: [
                   Stack(
                     children: [
-                       "https://i.pravatar.cc/150?img=3".toCircularImage(
-                       size: 80
-                    ),
-                     
+                      "https://i.pravatar.cc/150?img=3".toCircularImage(
+                        size: 80,
+                      ),
+
                       Positioned(
                         bottom: 0,
                         right: 0,
@@ -99,6 +100,10 @@ class ProfileTab extends StatelessWidget {
                 icon: Icons.logout,
                 title: "Log out",
                 isLogout: true,
+                onTap: () async {
+                  await SharedPreferencesHelper.clearAllUserData();
+                  AppNavigators.pushReplacementNamed(AppRoutesName.loginView);
+                },
               ),
             ],
           ),
@@ -111,6 +116,7 @@ class ProfileTab extends StatelessWidget {
     required IconData icon,
     required String title,
     bool isLogout = false,
+    void Function()? onTap,
   }) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
@@ -123,11 +129,7 @@ class ProfileTab extends StatelessWidget {
         ),
       ),
       trailing: const Icon(Icons.chevron_right),
-      onTap: () {
-        if(isLogout){
-        //  LogOutStorage().logOut();
-        }
-      },
+      onTap: onTap,
     );
   }
 }

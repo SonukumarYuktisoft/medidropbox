@@ -25,12 +25,12 @@ class MyApp extends StatelessWidget {
       providers: AppBlocs.appBloc,
       child: BlocListener<NetworkBloc, NetworkState>(
         listener: (context, state) {
-          if (state.status == NetworkStatus.disconnected) {
-            AppSnackbar.showError('No internet connection');
+          // if (state.status == NetworkStatus.disconnected) {
+          //   AppSnackbar.showError('No internet connection');
             
-          } else if (state.status == NetworkStatus.connected) {
-            AppSnackbar.showSuccess('Connected to internet');
-          }
+          // } else if (state.status == NetworkStatus.connected) {
+          //   AppSnackbar.showSuccess('Connected to internet');
+          // }
         },
         child: MaterialApp.router(
            scaffoldMessengerKey: AppKey.scaffoldMessengerKey,

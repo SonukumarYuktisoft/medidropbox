@@ -3,7 +3,7 @@ class AppRoutesName {
   static const String loginView = 'login_view';
   static const String signupView = 'signup_view';
   static const String dashboardView = 'dashboard_view';
-    static const String hospitalDetailsView = 'hospital-details-view';
+  static const String hospitalDetailsView = 'hospital-details-view';
 
   static const String profileView = 'profile_view';
   
