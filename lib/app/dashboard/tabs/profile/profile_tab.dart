@@ -1,4 +1,5 @@
 import 'package:medidropbox/app/dashboard/tabs/profile/bloc/profile_bloc.dart';
+import 'package:medidropbox/core/helpers/app_dialog/log_out_dialog.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 import 'package:medidropbox/core/helpers/app_loader/data_loading.dart';
 import 'package:medidropbox/core/helpers/data_not_found.dart';
@@ -109,29 +110,29 @@ class ProfileTab extends StatelessWidget {
 
                       const SizedBox(height: 32),
 
-                      _profileTile(
+                      _profileTile(context,
                         icon: Icons.favorite_border,
                         title: "Favourites",
                       ),
-                      _profileTile(
+                      _profileTile(context,
                         icon: Icons.download_outlined,
                         title: "Downloads",
                       ),
-                      _profileTile(icon: Icons.language, title: "Language"),
-                      _profileTile(
+                      _profileTile(context,icon: Icons.language, title: "Language"),
+                      _profileTile(context,
                         icon: Icons.location_on_outlined,
                         title: "Location",
                       ),
-                      _profileTile(
+                      _profileTile(context,
                         icon: Icons.subscriptions_outlined,
                         title: "Subscription",
                       ),
-                      _profileTile(
+                      _profileTile(context,
                         icon: Icons.delete_outline,
                         title: "Clear cache",
                       ),
-                      _profileTile(icon: Icons.history, title: "Clear history"),
-                      _profileTile(
+                      _profileTile(context,icon: Icons.history, title: "Clear history"),
+                      _profileTile(context,
                         icon: Icons.logout,
                         title: "Log out",
                         isLogout: true,
@@ -148,7 +149,9 @@ class ProfileTab extends StatelessWidget {
     );
   }
 
-  Widget _profileTile({
+  Widget _profileTile(
+    BuildContext context,
+    {
     required IconData icon,
     required String title,
     bool isLogout = false,
@@ -166,6 +169,7 @@ class ProfileTab extends StatelessWidget {
       trailing: const Icon(Icons.chevron_right),
       onTap: () {
         if (isLogout) {
+          showLogoutDialog(context);
           //  LogOutStorage().logOut();
         }
       },

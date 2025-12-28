@@ -11,7 +11,7 @@ import 'package:medidropbox/navigator/routes/app_routes/app_routes_path.dart';
 class AppRouter {
   static GoRouter router = GoRouter(
     navigatorKey: AppKey.navigatorKey,
-    initialLocation: AppRoutesPath.login,
+    initialLocation: AppRoutesPath.splash,
     debugLogDiagnostics: true,
     // Redirect logic (optional)
     // redirect: (BuildContext context, GoRouterState state) {

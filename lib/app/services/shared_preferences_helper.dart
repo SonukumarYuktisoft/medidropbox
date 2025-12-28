@@ -128,4 +128,10 @@ class SharedPreferencesHelper {
     final isLoggedIn = await SharedPreferencesHelper.isLoggedIn();
     return accessToken != null && accessToken.isNotEmpty && isLoggedIn;
   }
+
+  static Future<void> logoutAndResetApp() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.clear(); // sab kuch clear
+}
+
 }

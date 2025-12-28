@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           if (state.status == NetworkStatus.disconnected) {
             AppSnackbar.showError('No internet connection');
           } else if (state.status == NetworkStatus.connected) {
-            AppSnackbar.showSuccess('Connected to internet');
+            //AppSnackbar.showSuccess('Connected to internet');
           }
         },
         child: MaterialApp.router(

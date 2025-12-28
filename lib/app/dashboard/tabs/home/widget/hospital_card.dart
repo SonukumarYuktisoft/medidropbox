@@ -9,7 +9,6 @@ import 'package:medidropbox/core/helpers/refresh_view.dart';
 
 class HospitalCard extends StatelessWidget {
   const HospitalCard({super.key});
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(

@@ -77,7 +77,7 @@ class AppointmentTab extends StatelessWidget {
                       ),
 
                       /// Floating Create Button
-                      Positioned(
+                      /* Positioned(
                         bottom: 20,
                         right: 20,
                         child: GestureDetector(
@@ -107,7 +107,7 @@ class AppointmentTab extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
+                      ), */
                     ],
                   ),
                 );
@@ -250,7 +250,7 @@ class AppointmentCard extends StatelessWidget {
                     onPressed: () {
                       AppNavigators.pushNamed(
                         AppRoutesName.bookingDetailsView,
-                        extra: booking.id, // 🔥 IMPORTANT
+                        extra: booking.id.toString(), // 🔥 IMPORTANT
                       );
                     },
                     style: ElevatedButton.styleFrom(
