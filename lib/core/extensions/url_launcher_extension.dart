@@ -138,18 +138,20 @@ extension UrlLauncherExtension on String {
   }
 
   // Open Google Maps with coordinates
-  Future<void> openMapsWithCoordinates(double lat, double lng) async {
-    final uri = Uri.parse(
-      "https://www.google.com/maps/search/?api=1&query=$lat,$lng",
+  Future<void> openMapsWithCoordinates(double latitude, double longitude)  async{
+    final Uri uri = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude',
     );
 
     if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
     } else {
-      debugPrint("Could not open maps");
+      debugPrint('Could not open Google Maps');
     }
   }
-
   // Open Telegram
   Future<void> openTelegram() async {
     final uri = Uri.parse("https://t.me/$this");

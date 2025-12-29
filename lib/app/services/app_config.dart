@@ -8,6 +8,9 @@ class AppConfig {
   static const String patientsRegister = '$baseUrl/api/v1/patients/register';
   static const String generateOtp = '$baseUrl/api/v1/otp/generate';
   static const String verifyOtpAndLogin = '$baseUrl/api/v1/otp/verify';
+  static const String patientsRegister = '$baseUrl/api/v1/patients/register';
+  static const String generateOtp = '$baseUrl/api/v1/otp/generate';
+  static const String verifyOtpAndLogin = '$baseUrl/api/v1/otp/verify';
 
   // 2. Browse Hospitals
   static const String getAllHospitals = '$baseUrl/api/v1/hospitals';

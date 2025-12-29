@@ -1,9 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:medidropbox/app/dashboard/dashboard_view.dart';
-import 'package:medidropbox/app/dashboard/tabs/appointment/booking_details.dart';
-import 'package:medidropbox/app/dashboard/tabs/appointment/create_appointment.dart';
+import 'package:medidropbox/app/models/hospitals_models/all_hospital_model.dart';
 import 'package:medidropbox/app/views/book_appointment/book_appointment_view.dart';
-import 'package:medidropbox/app/views/doctor_details/doctor_details.dart';
+import 'package:medidropbox/app/views/doctor_details/doctor_details_view.dart';
 import 'package:medidropbox/app/views/edit_profile/edit_profile.dart';
 import 'package:medidropbox/app/views/hospitals_details/hospital_details_view.dart';
 import 'package:medidropbox/navigator/routes/app_routes/app_routes_name.dart';
@@ -19,7 +18,10 @@ class DashboardRoutes {
     GoRoute(
       path: AppRoutesPath.hospitalDetails,
       name: AppRoutesName.hospitalDetailsView,
-      builder: (context, state) => const HospitalDetailsView(),
+      builder: (context, state) {
+        final hospitalId = state.extra as String;
+        return HospitalDetailsView(hospitalId: hospitalId);
+      },
     ),
     GoRoute(
       path: AppRoutesPath.bookAppointment,
@@ -35,24 +37,8 @@ class DashboardRoutes {
       path: AppRoutesPath.doctorDetails,
       name: AppRoutesName.doctorDetailsView,
       builder: (context, state) {
-        var arg = state.extra as Map<String, dynamic>;
-        return DoctorDetails(doctor: arg);
-      },
-    ),
-
-    GoRoute(
-      path: AppRoutesPath.createAppointment,
-      name: AppRoutesName.createAppointmentView,
-      builder: (context, state) {
-        return CreateAppointmentPage();
-      },
-    ),
-    GoRoute(
-      path: AppRoutesPath.bookingDetails,
-      name: AppRoutesName.bookingDetailsView,
-      builder: (context, state) {
-        var arg = state.extra as String;
-        return BookingDetails(arg);
+        final doctorId = state.extra as String;
+        return DoctorDetailsView(doctorId: doctorId);
       },
     ),
   ];

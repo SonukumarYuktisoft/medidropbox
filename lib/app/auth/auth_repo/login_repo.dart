@@ -5,27 +5,22 @@ import 'package:medidropbox/app/auth/auth_repo/auth_repo.dart';
 import 'package:medidropbox/app/services/api_service.dart';
 import 'package:medidropbox/app/services/app_config.dart';
 import 'package:medidropbox/app/services/shared_preferences_helper.dart';
-
+import 'package:medidropbox/app/services/token_manager.dart';
 
 class LoginRepo implements AuthRepo {
   final ApiService _apiService = ApiService();
 
   @override
-  Future<Map<String, dynamic>> generateOtp({
-    required String phone,
-  }) async {
+  Future<Map<String, dynamic>> generateOtp({required String phone}) async {
     try {
       final response = await _apiService.requestPostForApi(
         url: AppConfig.generateOtp,
-        dictParameter: {'phone': phone},
+        dictParameter: {"phone": "+91-1234567890"},
         authToken: false,
       );
 
       if (response == null) {
-        return {
-          'success': false,
-          'message': 'No response from server',
-        };
+        return {'success': false, 'message': 'No response from server'};
       }
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -62,32 +57,29 @@ class LoginRepo implements AuthRepo {
     try {
       final response = await _apiService.requestPostForApi(
         url: AppConfig.verifyOtpAndLogin,
-        dictParameter: {
-          'phone': phone,
-          'otp': otp,
-        },
+        dictParameter: {'phone': phone, 'otp': otp},
         authToken: false,
       );
 
       if (response == null) {
-        return {
-          'success': false,
-          'message': 'No response from server',
-        };
+        return {'success': false, 'message': 'No response from server'};
       }
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         log('✅ OTP verified and logged in successfully');
-        
+
         // Extract accessToken from response
-        String? accessToken = response.data['accessToken'] ?? response.data['data']?['accessToken'];
-        
+        String? accessToken =
+            response.data['accessToken'] ??
+            response.data['data']?['accessToken'];
+
         // Save accessToken to SharedPreferences
         if (accessToken != null) {
+           
           await SharedPreferencesHelper.setUserToken(accessToken);
           log('✅ Token saved to SharedPreferences');
         }
-        
+
         return {
           'success': true,
           'message': 'Login successful',

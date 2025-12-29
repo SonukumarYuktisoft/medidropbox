@@ -1,14 +1,14 @@
 // To parse this JSON data, do
 //
-//     final allHospitalModel = allHospitalModelFromJson(jsonString);
+//     final hospitalDetailModel = hospitalDetailModelFromJson(jsonString);
 
 import 'dart:convert';
 
-List<AllHospitalModel> allHospitalModelFromJson(String str) => List<AllHospitalModel>.from(json.decode(str).map((x) => AllHospitalModel.fromJson(x)));
+HospitalDetailModel hospitalDetailModelFromJson(String str) => HospitalDetailModel.fromJson(json.decode(str));
 
-String allHospitalModelToJson(List<AllHospitalModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String hospitalDetailModelToJson(HospitalDetailModel data) => json.encode(data.toJson());
 
-class AllHospitalModel {
+class HospitalDetailModel {
     int? id;
     String? name;
     dynamic founder;
@@ -25,7 +25,7 @@ class AllHospitalModel {
     bool? isActive;
     dynamic adminUsername;
 
-    AllHospitalModel({
+    HospitalDetailModel({
         this.id,
         this.name,
         this.founder,
@@ -43,7 +43,7 @@ class AllHospitalModel {
         this.adminUsername,
     });
 
-    factory AllHospitalModel.fromJson(Map<String, dynamic> json) => AllHospitalModel(
+    factory HospitalDetailModel.fromJson(Map<String, dynamic> json) => HospitalDetailModel(
         id: json["id"],
         name: json["name"],
         founder: json["founder"],

@@ -155,6 +155,7 @@ class ProfileTab extends StatelessWidget {
     required IconData icon,
     required String title,
     bool isLogout = false,
+    void Function()? onTap,
   }) {
     return ListTile(
       contentPadding: EdgeInsets.zero,

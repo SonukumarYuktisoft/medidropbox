@@ -3,31 +3,85 @@ part of 'home_bloc.dart';
 class HomeState extends Equatable {
   const HomeState({
     this.mess = '',
-    this.allHospitalSatatus = ApiStatus.initial,
+    this.allHospitalStatus = ApiStatus.initial,
     this.allHospitalList,
-    this.selectedHospital,
+    this.allDoctorStatus = ApiStatus.initial,
+    this.allDoctorList,
+    this.hospitalDetailStatus = ApiStatus.initial,
+    this.hospitalDetail,
+    this.doctorDetailStatus = ApiStatus.initial,
+    this.doctorDetail,
+    this.currentPage = 0,
+    this.pageSize = 10,
+    this.hasMoreHospitals = true,
+    this.isLoadingMore = false,
+    this.hospitalFilters,
   });
+  
   final String mess;
-  final ApiStatus allHospitalSatatus;
+  final ApiStatus allHospitalStatus;
   final List<AllHospitalModel>? allHospitalList;
-  final AllHospitalModel? selectedHospital;
+  final ApiStatus hospitalDetailStatus;
+  final HospitalDetailModel? hospitalDetail;
+  final ApiStatus allDoctorStatus;
+  final List<AllDoctorsModel>? allDoctorList;
+  final ApiStatus doctorDetailStatus;
+  final DoctorDetailModel? doctorDetail;
+  
+  // Pagination and filter fields
+  final int currentPage;
+  final int pageSize;
+  final bool hasMoreHospitals;
+  final bool isLoadingMore;
+  final Map<String, dynamic>? hospitalFilters;
 
   HomeState copyWith({
     String? mess,
-    ApiStatus? allHospitalSatatus,
-    AllHospitalModel? selectedHospital,
+    ApiStatus? allHospitalStatus,
     List<AllHospitalModel>? allHospitalList,
+    ApiStatus? allDoctorStatus,
+    List<AllDoctorsModel>? allDoctorList,
+    ApiStatus? hospitalDetailStatus,
+    HospitalDetailModel? hospitalDetail,
+    ApiStatus? doctorDetailStatus,
+    DoctorDetailModel? doctorDetail,
+    int? currentPage,
+    int? pageSize,
+    bool? hasMoreHospitals,
+    bool? isLoadingMore,
+    Map<String, dynamic>? hospitalFilters,
   }) => HomeState(
     mess: mess ?? this.mess,
-    allHospitalSatatus: allHospitalSatatus ?? this.allHospitalSatatus,
+    allHospitalStatus: allHospitalStatus ?? this.allHospitalStatus,
     allHospitalList: allHospitalList ?? this.allHospitalList,
-    selectedHospital: selectedHospital ?? this.selectedHospital,
+    allDoctorStatus: allDoctorStatus ?? this.allDoctorStatus,
+    allDoctorList: allDoctorList ?? this.allDoctorList,
+    hospitalDetailStatus: hospitalDetailStatus ?? this.hospitalDetailStatus,
+    hospitalDetail: hospitalDetail ?? this.hospitalDetail,
+    doctorDetailStatus: doctorDetailStatus ?? this.doctorDetailStatus,
+    doctorDetail: doctorDetail ?? this.doctorDetail,
+    currentPage: currentPage ?? this.currentPage,
+    pageSize: pageSize ?? this.pageSize,
+    hasMoreHospitals: hasMoreHospitals ?? this.hasMoreHospitals,
+    isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+    hospitalFilters: hospitalFilters ?? this.hospitalFilters,
   );
+  
   @override
   List<Object?> get props => [
     mess,
-    allHospitalSatatus,
+    allHospitalStatus,
     allHospitalList,
-    selectedHospital,
+    allDoctorStatus,
+    allDoctorList,
+    hospitalDetailStatus,
+    hospitalDetail,
+    doctorDetailStatus,
+    doctorDetail,
+    currentPage,
+    pageSize,
+    hasMoreHospitals,
+    isLoadingMore,
+    hospitalFilters,
   ];
 }

@@ -13,6 +13,7 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   void initState() {
     context.read<HomeBloc>().add(OnGetAllHospital());
+    context.read<HomeBloc>().add(OnGetAllDoctors('1'));
     super.initState();
   }
 

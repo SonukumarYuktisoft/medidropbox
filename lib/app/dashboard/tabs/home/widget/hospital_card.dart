@@ -1,5 +1,5 @@
 import 'package:medidropbox/app/dashboard/tabs/home/bloc/home_bloc.dart';
-import 'package:medidropbox/app/models/hospitals/all_hospital_model.dart';
+import 'package:medidropbox/app/models/hospitals_models/all_hospital_model.dart';
 import 'package:medidropbox/core/extensions/button_extension.dart';
 import 'package:medidropbox/core/extensions/container_extension.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
@@ -12,12 +12,12 @@ class HospitalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (previous, current) => previous.allHospitalSatatus!=current.allHospitalSatatus,
+      buildWhen: (previous, current) => previous.allHospitalStatus!=current.allHospitalStatus,
       builder: (context, state) {
-        if(state.allHospitalSatatus==ApiStatus.loading){
+        if(state.allHospitalStatus==ApiStatus.loading){
           return HorizentalListShimmer(height: 200,width: 262,horizontalMargin: 15,);
         }
-        if(state.allHospitalSatatus==ApiStatus.error){
+        if(state.allHospitalStatus==ApiStatus.error){
           return RefreshView(onPressed: () => 
           context.read<HomeBloc>().add(OnGetAllHospital())).radiusContainer(
             color: Colors.grey.shade300,
@@ -25,7 +25,7 @@ class HospitalCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 40),
           );
         }
-         if(state.allHospitalSatatus==ApiStatus.success){
+         if(state.allHospitalStatus==ApiStatus.success){
           if(state.allHospitalList==null||state.allHospitalList!.isEmpty){
             return DataNotFound();
           }
@@ -211,7 +211,7 @@ class HospitalCard extends StatelessWidget {
     ),
   ).asButton(
     onTap: () {
-      AppNavigators.pushNamed(AppRoutesName.hospitalDetailsView);
+      AppNavigators.pushNamed(AppRoutesName.hospitalDetailsView,extra: data.id.toString() );
     },
   );
 }
