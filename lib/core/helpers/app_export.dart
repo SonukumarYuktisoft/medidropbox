@@ -9,6 +9,8 @@ export 'package:medidropbox/core/extensions/space_extension.dart' ;
 export 'package:medidropbox/core/extensions/padding_extension.dart';
 export 'package:equatable/equatable.dart';
 export 'package:medidropbox/app/services/api_response_handler.dart';
+export 'package:medidropbox/core/extensions/container_extension.dart';
+
 
 export 'package:medidropbox/core/common/app_back_btn.dart';
 export 'package:medidropbox/core/utility/const/app_enums.dart';

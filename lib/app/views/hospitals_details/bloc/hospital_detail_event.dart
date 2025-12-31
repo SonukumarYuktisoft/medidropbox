@@ -7,4 +7,27 @@ abstract class HospitalDetailEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OnHospitalDetails extends HospitalDetailEvent {}
+class OnGetHospitalById extends HospitalDetailEvent {
+  final String id;
+  const OnGetHospitalById(this.id);
+  @override
+  List<Object> get props => [id];
+}
+
+class OnGetAllDoctorsByHospital extends HospitalDetailEvent {
+  final String hospitalId;
+
+  const OnGetAllDoctorsByHospital(this.hospitalId);
+
+  @override
+  List<Object> get props => [hospitalId];
+}
+
+
+
+class OnSelectDoctor extends HospitalDetailEvent {
+  final AllDoctorsModel doc;
+  const OnSelectDoctor(this.doc);
+  @override
+  List<Object> get props => [doc];
+}

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:medidropbox/app/repository/profile/profile_repo.dart';
 import 'package:medidropbox/app/services/api_model.dart';
 import 'package:medidropbox/app/services/api_service.dart';

@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:medidropbox/core/extensions/button_extension.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 import 'package:shimmer/shimmer.dart';
 
 class BookAppointmentBtn extends StatefulWidget {
   const BookAppointmentBtn({super.key});
-
   @override
   State<BookAppointmentBtn> createState() => _BookAppointmentBtnState();
 }

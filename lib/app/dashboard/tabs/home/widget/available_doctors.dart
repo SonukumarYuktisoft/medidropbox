@@ -1,10 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medidropbox/app/dashboard/tabs/home/bloc/home_bloc.dart';
 import 'package:medidropbox/app/models/doctors_models/all_doctors_model.dart';
 import 'package:medidropbox/core/common/app_snackbaar.dart';
 import 'package:medidropbox/core/extensions/container_extension.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
-import 'package:medidropbox/core/helpers/app_shimmer/doctor_shimmer/doctor_cards_shimmer/doctor_grid_card_shimmer.dart';
 import 'package:medidropbox/core/helpers/app_shimmer/vertical_list_shimmer.dart';
 import 'package:medidropbox/core/helpers/refresh_view.dart';
 
@@ -27,7 +25,7 @@ class AvailableDoctors extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 40),
           );
         } else if (state.allDoctorStatus == ApiStatus.loading) {
-          return VerticalListShimmer();
+          return VerticalListShimmer(shrinkWrap: true);
         } else if (state.allDoctorStatus == ApiStatus.success &&
             (state.allDoctorList == null || state.allDoctorList!.isEmpty)) {
           return Column(

@@ -13,10 +13,10 @@ class NavBaar extends StatelessWidget {
     return BlocListener<DashboardBloc, DashboardState>(
       listenWhen: (p, c) => p.tabPosition != c.tabPosition,
       listener: (context, state) {
-        if (state.tabPosition == 2) {
+        if (state.tabPosition == 3) {
           context.read<AppointmentBloc>().add(OnGetBooking());
         }
-        if (state.tabPosition == 3) {
+        if (state.tabPosition == 4) {
           context.read<ProfileBloc>().add(OnGetProfile());
         }
       },

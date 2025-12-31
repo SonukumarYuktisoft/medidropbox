@@ -6,8 +6,11 @@ import 'package:medidropbox/app/services/mock_response_handler.dart';
 class AppointmentMocRepo extends BaseMockRepository implements AppointmentRepo {
   @override
   Future<ApiModel> createAppointment(Map<String, dynamic> data) {
-    // TODO: implement getAppointment
-    throw UnimplementedError();
+    return mockResponse(
+      status: true,
+      message: 'message',
+      data: createBookingMoc,
+    );
   }
 
   @override
@@ -25,6 +28,37 @@ class AppointmentMocRepo extends BaseMockRepository implements AppointmentRepo {
     throw UnimplementedError();
   }
 }
+
+var createBookingMoc={
+    "id": 14,
+    "doctorId": 1,
+    "doctorName": "Dr. Jane Doe Updated",
+    "patientId": 6,
+    "patientName": "John Doe",
+    "patientPhone": null,
+    "patientEmail": null,
+    "hospitalId": 1,
+    "hospitalName": "City General Hospital",
+    "bookingDate": "2024-12-25",
+    "bookingTime": "10:00:00",
+    "phoneNumber": "+91-9876543210",
+    "queue": {
+        "id": 11,
+        "queueNumber": 5,
+        "status": "WAITING"
+    },
+    "payment": {
+        "id": 10,
+        "paymentMode": "UPI",
+        "totalBill": 1500.00,
+        "totalAmount": 1500.00,
+        "discount": 0.00,
+        "taxableAmount": 1350.00,
+        "gst": 150.00,
+        "transactionId": "TXN1234567890UPI"
+    },
+    "status": "CONFIRMED"
+};
 
 var _appointmentMoc = [
   {

@@ -8,14 +8,7 @@ abstract class HomeEvent extends Equatable {
 
 class OnGetAllHospital extends HomeEvent {}
 
-class OnGetHospitalById extends HomeEvent {
-  final String id;
 
-  const OnGetHospitalById(this.id);
-
-  @override
-  List<Object> get props => [id];
-}
 
 class OnGetAllDoctors extends HomeEvent {
   final String hospitalId;

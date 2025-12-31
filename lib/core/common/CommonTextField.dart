@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class CommonTextField extends StatelessWidget {
   final String label;
   final String? hintText;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final TextInputType keyboardType;
   final bool readOnly;
   final VoidCallback? onTap;
@@ -32,7 +32,7 @@ class CommonTextField extends StatelessWidget {
     super.key,
     required this.label,
     this.hintText,
-    required this.controller,
+     this.controller,
     this.keyboardType = TextInputType.text,
     this.readOnly = false,
     this.onTap,

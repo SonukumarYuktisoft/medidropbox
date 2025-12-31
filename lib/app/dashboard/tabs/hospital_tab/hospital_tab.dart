@@ -1,16 +1,12 @@
-import 'package:medidropbox/app/dashboard/dashboard_widget/hospital_dropdown.dart';
-import 'package:medidropbox/app/dashboard/tabs/home/bloc/home_bloc.dart';
-import 'package:medidropbox/app/dashboard/tabs/home/widget/hospital_card.dart';
+import 'package:medidropbox/app/dashboard/tabs/hospital_tab/bloc/hospital_filter_bloc.dart';
+import 'package:medidropbox/app/dashboard/tabs/hospital_tab/bloc/hospital_filter_event.dart';
+import 'package:medidropbox/app/dashboard/tabs/hospital_tab/bloc/hospital_filter_state.dart';
 import 'package:medidropbox/app/dashboard/tabs/hospital_tab/widgets/hospital_card.dart';
 import 'package:medidropbox/app/dashboard/tabs/hospital_tab/widgets/hospital_filter/hospital_filter_widget.dart';
 import 'package:medidropbox/core/extensions/container_extension.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
-import 'package:medidropbox/core/helpers/app_shimmer/horizental_grid_Shimmer.dart';
-import 'package:medidropbox/core/helpers/app_shimmer/horizental_list_shimmer.dart';
+import 'package:medidropbox/core/helpers/app_loader/app_page_loader.dart';
 import 'package:medidropbox/core/helpers/app_shimmer/hospital_shimmer/hospital_card_shimmer/hospital_grid_card_shimmer.dart';
-import 'package:medidropbox/core/helpers/app_shimmer/vertical_grid_shimmer.dart';
-import 'package:medidropbox/core/helpers/carousel/app_carousel.dart';
-import 'package:medidropbox/core/helpers/carousel/app_multiItem_carousel.dart';
 import 'package:medidropbox/core/helpers/refresh_view.dart';
 
 class HospitalTab extends StatefulWidget {
@@ -27,7 +23,7 @@ class _HospitalTabState extends State<HospitalTab> {
   @override
   void initState() {
     super.initState();
-    context.read<HomeBloc>().add(OnGetAllHospital());
+    context.read<HospitalFilterBloc>().add(OnRefressh());
     _scrollController.addListener(_onScroll);
   }
 
@@ -39,33 +35,15 @@ class _HospitalTabState extends State<HospitalTab> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels >= 
-        _scrollController.position.maxScrollExtent - 200) {
-      final state = context.read<HomeBloc>().state;
-      if (state.hasMoreHospitals && !state.isLoadingMore) {
-        context.read<HomeBloc>().add(OnLoadMoreHospitals());
-      }
+    if (_scrollController.position.pixels == 
+        _scrollController.position.maxScrollExtent) {
+     context.read<HospitalFilterBloc>().add(OnPageNation());
     }
   }
 
-  void _showFilterBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => const HospitalFilterWidget(),
-    );
-  }
+ 
 
-  void _onSearchChanged(String query) {
-    if (query.isEmpty) {
-      context.read<HomeBloc>().add(OnResetHospitalFilters());
-    } else {
-      context.read<HomeBloc>().add(OnSearchHospitals(query));
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +59,7 @@ class _HospitalTabState extends State<HospitalTab> {
                 Expanded(
                   child: TextField(
                     controller: _searchController,
-                    onChanged: _onSearchChanged,
+                    onChanged: (d)=> context.read<HospitalFilterBloc>().add(OnChangedSearch(d)),
                     decoration: InputDecoration(
                       hintText: 'Search hospitals...',
                       hintStyle: TextStyle(color: Colors.grey.shade500),
@@ -91,7 +69,7 @@ class _HospitalTabState extends State<HospitalTab> {
                               icon: const Icon(Icons.clear),
                               onPressed: () {
                                 _searchController.clear();
-                                _onSearchChanged('');
+                               context.read<HospitalFilterBloc>().add(OnApplyFilters());
                               },
                             )
                           : null,
@@ -125,7 +103,7 @@ class _HospitalTabState extends State<HospitalTab> {
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.filter_list, color: Colors.white),
-                    onPressed: _showFilterBottomSheet,
+                    onPressed:()=> showFilterBottomSheet(context),
                   ),
                 ),
               ],
@@ -134,20 +112,21 @@ class _HospitalTabState extends State<HospitalTab> {
 
           // Hospital Grid
           Expanded(
-            child: BlocBuilder<HomeBloc, HomeState>(
+            child: BlocBuilder<HospitalFilterBloc, HospitalFilterState>(
               builder: (context, state) {
+                 if (state.allHospitalStatus == ApiStatus.loading) {
+                  return const HospitalGridCardShimmer();
+                }
                 if (state.allHospitalStatus == ApiStatus.error) {
                   return RefreshView(
                     onPressed: () =>
-                        context.read<HomeBloc>().add(OnGetAllHospital()),
+                        context.read<HospitalFilterBloc>().add(OnRefressh()),
                   ).radiusContainer(
                     color: Colors.grey.shade300,
                     margin: const EdgeInsets.symmetric(horizontal: 15),
                     padding: const EdgeInsets.symmetric(vertical: 40),
                   );
-                } else if (state.allHospitalStatus == ApiStatus.loading) {
-                  return const HospitalGridCardShimmer();
-                } else if (state.allHospitalStatus == ApiStatus.success) {
+                }  else if (state.allHospitalStatus == ApiStatus.success) {
                   if (state.allHospitalList?.isEmpty ?? true) {
                     return Center(
                       child: Column(
@@ -177,9 +156,12 @@ class _HospitalTabState extends State<HospitalTab> {
                           ),
                           const SizedBox(height: 16),
                           ElevatedButton.icon(
-                            onPressed: () => context
-                                .read<HomeBloc>()
-                                .add(OnResetHospitalFilters()),
+                            onPressed: () {
+                             
+                               context.read<HospitalFilterBloc>().add(OnRefressh());
+                                _searchController.clear();
+                            },
+
                             icon: const Icon(Icons.refresh),
                             label: const Text('Clear filters'),
                             style: ElevatedButton.styleFrom(
@@ -197,55 +179,36 @@ class _HospitalTabState extends State<HospitalTab> {
                   return Column(
                     children: [
                       Expanded(
-                        child: GridView.builder(
-                          controller: _scrollController,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
-                          ),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 16,
-                            childAspectRatio: 0.75,
-                          ),
-                          itemCount: state.allHospitalList!.length,
-                          itemBuilder: (context, index) {
-                            final hospital = state.allHospitalList![index];
-                            return HospitalTabCard(hospital: hospital);
+                        child: RefreshIndicator(
+                          onRefresh: ()async {
+                            context.read<HospitalFilterBloc>().add(OnRefressh());
                           },
+                          child: GridView.builder(
+                            controller: _scrollController,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 10,
+                            ),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 16,
+                              childAspectRatio: 0.70,
+                            ),
+                            itemCount: state.allHospitalList!.length,
+                            itemBuilder: (context, index) {
+                              final hospital = state.allHospitalList![index];
+                              return HospitalTabCard(hospital: hospital);
+                            },
+                          ),
                         ),
                       ),
+
+                      AppPaginationLoader<HospitalFilterBloc, HospitalFilterState>(
+                        getPageStatus: (d)=>d.pageStatus)
                       
-                      // Loading More Indicator
-                      if (state.isLoadingMore)
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.blue.shade600,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                'Loading more...',
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                   
                     ],
                   );
                 }

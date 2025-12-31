@@ -17,22 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkConnectionAndNavigate() async {
-    // Check network status first
-    context.read<NetworkBloc>().add(CheckNetworkStatus());
-
-    // Wait for 3 seconds (splash screen display time)
     await Future.delayed(const Duration(seconds: 3));
-
-    if (!mounted) return;
-
-    final networkState = context.read<NetworkBloc>().state;
-
-    // Check network connection
-    if (!networkState.isConnected) {
-      AppNavigators.pushNamed(AppRoutesName.noInternetConnectionView);
-      return;
-    }
-
     // Network is connected, check app flow
     await _navigateBasedOnAppState();
   }

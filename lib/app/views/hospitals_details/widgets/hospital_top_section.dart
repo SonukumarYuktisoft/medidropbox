@@ -1,4 +1,4 @@
-import 'package:medidropbox/app/dashboard/tabs/home/bloc/home_bloc.dart';
+import 'package:medidropbox/app/views/hospitals_details/bloc/hospital_detail_bloc.dart';
 import 'package:medidropbox/app/views/hospitals_details/widgets/hospital_basic_info_section.dart';
 import 'package:medidropbox/app/views/hospitals_details/widgets/hospital_header_section.dart';
 import 'package:medidropbox/app/views/hospitals_details/widgets/hospital_quick_info_section.dart';
@@ -10,7 +10,8 @@ class HospitalTopSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocBuilder<HospitalDetailBloc, HospitalDetailState>(
+      buildWhen: (previous, current) => previous.hospitalDetailStatus!=current.hospitalDetailStatus,
       builder: (context, state) {
         if (state.hospitalDetailStatus == ApiStatus.loading) {
           return HospitalTopSectionDetailsShimmer();

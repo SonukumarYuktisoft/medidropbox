@@ -58,8 +58,21 @@ class HospitalApiRepo implements HospitalRepo {
   }
 
   @override
-  Future<ApiModel> getHospitalById(String id) {
-    throw UnimplementedError();
+  Future<ApiModel> getHospitalById(String id) async {
+    try {
+      final response = await network.requestGetForApi(
+        url: AppConfig.getHospitalsById(id),
+        authToken: true,
+      );
+      final bool isSuccess = (response != null && response.statusCode == 200);
+      return ApiModel(
+        status: isSuccess,
+        message: isSuccess?"getHospitalsById Success":"getHospitalsById error",
+        data: isSuccess ? response.data : null,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override

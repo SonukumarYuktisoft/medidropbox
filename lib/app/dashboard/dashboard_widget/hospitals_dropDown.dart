@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:medidropbox/app/dashboard/bloc/dashboard_bloc.dart';
 import 'package:medidropbox/app/dashboard/tabs/home/bloc/home_bloc.dart';
-import 'package:medidropbox/app/models/hospitals/all_hospital_model.dart';
+import 'package:medidropbox/app/models/hospitals_models/all_hospital_model.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 
 class HospitalsDropdown extends StatelessWidget {
@@ -22,7 +22,7 @@ class HospitalsDropdown extends StatelessWidget {
           onChanged: (value) {
             if (value == null) return;
             log(value.id.toString(), name: "ID MIL GAYA YOOHU");
-            context.read<HomeBloc>().add(OnSelecteHospitalData(value));
+            // context.read<HomeBloc>().add(OnSelecteHospitalData(value));
           },
         );
       },

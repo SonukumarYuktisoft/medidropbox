@@ -18,8 +18,11 @@ class HospitalServicesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        "Services".toHeadingText(
-          appFontStyle: AppFontStyle.semiBold,
+        Align(
+          alignment: AlignmentGeometry.centerLeft,
+          child: "Services".toHeadingText(
+            appFontStyle: AppFontStyle.semiBold,
+          ),
         ),
         10.heightBox,
         Wrap(

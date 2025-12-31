@@ -41,8 +41,7 @@ class HomeState extends Equatable {
     List<AllHospitalModel>? allHospitalList,
     ApiStatus? allDoctorStatus,
     List<AllDoctorsModel>? allDoctorList,
-    ApiStatus? hospitalDetailStatus,
-    HospitalDetailModel? hospitalDetail,
+
     ApiStatus? doctorDetailStatus,
     DoctorDetailModel? doctorDetail,
     int? currentPage,
@@ -56,8 +55,6 @@ class HomeState extends Equatable {
     allHospitalList: allHospitalList ?? this.allHospitalList,
     allDoctorStatus: allDoctorStatus ?? this.allDoctorStatus,
     allDoctorList: allDoctorList ?? this.allDoctorList,
-    hospitalDetailStatus: hospitalDetailStatus ?? this.hospitalDetailStatus,
-    hospitalDetail: hospitalDetail ?? this.hospitalDetail,
     doctorDetailStatus: doctorDetailStatus ?? this.doctorDetailStatus,
     doctorDetail: doctorDetail ?? this.doctorDetail,
     currentPage: currentPage ?? this.currentPage,

@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:medidropbox/app/models/doctors_models/all_doctors_model.dart';
-import 'package:medidropbox/app/models/doctors_models/doctor_detail_model.dart';
 import 'package:medidropbox/core/extensions/image_extesion.dart';
 import 'package:medidropbox/navigator/app_navigators/app_navigators.dart';
 import 'package:medidropbox/navigator/routes/app_routes/app_routes_name.dart';

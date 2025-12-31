@@ -63,14 +63,54 @@ class OnAmbulanceToggled extends HospitalFilterEvent {
 }
 
 class OnApplyFilters extends HospitalFilterEvent {
-  final Map<String, dynamic> filters;
-
-  const OnApplyFilters(this.filters);
-
-  @override
-  List<Object> get props => [filters];
 }
 
-class OnResetFilters extends HospitalFilterEvent {
-  const OnResetFilters();
+
+
+
+
+class OnChangedPinCode extends HospitalFilterEvent {
+  const OnChangedPinCode(this.pincode);
+final String pincode;
+  @override
+  List<Object> get props => [pincode];
+}
+class OnChangedLat extends HospitalFilterEvent {
+  const OnChangedLat(this.lat);
+final String lat;
+  @override
+  List<Object> get props => [lat];
+}
+class OnChangedLng extends HospitalFilterEvent {
+  const OnChangedLng(this.lng);
+final String lng;
+  @override
+  List<Object> get props => [lng];
+}
+
+class OnChangedRadius extends HospitalFilterEvent {
+  const OnChangedRadius(this.radius);
+final String radius;
+  @override
+  List<Object> get props => [radius];
+}
+
+
+class OnGetAllHospital extends HospitalFilterEvent {
+
+}
+
+class OnChangedSearch extends HospitalFilterEvent {
+  const OnChangedSearch(this.searchKey);
+final String searchKey;
+  @override
+  List<Object> get props => [searchKey];
+}
+
+
+class OnPageNation extends HospitalFilterEvent {
+
+}
+class OnRefressh extends HospitalFilterEvent {
+
 }

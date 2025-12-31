@@ -14,7 +14,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   
   HomeBloc(this.repo, this.doctorRepo) : super(HomeState()) {
     on<OnGetAllHospital>(_onGetAllHospital);
-    on<OnGetHospitalById>(_onGetHospitalById);
+
     on<OnGetAllDoctors>(_onGetAllDoctor);
     on<OnGetDoctorById>(_onGetDoctorById);
     on<OnLoadMoreHospitals>(_onLoadMoreHospitals);
@@ -229,45 +229,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       currentPage: 0,
     ));
     add(OnGetAllHospital());
-  }
-
-  void _onGetHospitalById(
-    OnGetHospitalById event,
-    Emitter<HomeState> emit,
-  ) async {
-    emit(state.copyWith(hospitalDetailStatus: ApiStatus.loading));
-    try {
-      final res = await repo.getHospitalByIdPublicNoAuth(event.id);
-
-      print('Raw API Response: $res');
-
-      ApiResponseHandler.handle<HospitalDetailModel, HomeState>(
-        emit: emit,
-        state: state,
-        response: res,
-        parser: (d) {
-          print('Data to parse: $d');
-          print('Data type: ${d.runtimeType}');
-          return HospitalDetailModel.fromJson(d);
-        },
-        onSuccess: (state, mess, data) => state.copyWith(
-          mess: mess,
-          hospitalDetail: data,
-          hospitalDetailStatus: ApiStatus.success,
-        ),
-        onError: (state, mess) =>
-            state.copyWith(hospitalDetailStatus: ApiStatus.error, mess: mess),
-      );
-    } catch (e, stackTrace) {
-      print('Error: $e');
-      print('StackTrace: $stackTrace');
-      emit(
-        state.copyWith(
-          mess: e.toString(),
-          hospitalDetailStatus: ApiStatus.error,
-        ),
-      );
-    }
   }
 
   void _onGetAllDoctor(OnGetAllDoctors event, Emitter<HomeState> emit) async {
