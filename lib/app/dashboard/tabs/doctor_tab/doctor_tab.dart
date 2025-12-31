@@ -1,6 +1,6 @@
+import 'package:medidropbox/app/dashboard/tabs/doctor_tab/bloc/doctor_tab_bloc.dart';
 import 'package:medidropbox/app/dashboard/tabs/doctor_tab/widgets/doctor_card.dart';
-import 'package:medidropbox/app/dashboard/tabs/home/bloc/home_bloc.dart';
-import 'package:medidropbox/core/extensions/container_extension.dart';
+import 'package:medidropbox/app/dashboard/tabs/doctor_tab/widgets/doctor_search_and_filtter_btn.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 import 'package:medidropbox/core/helpers/app_shimmer/doctor_shimmer/doctor_cards_shimmer/doctor_grid_card_shimmer.dart';
 import 'package:medidropbox/core/helpers/refresh_view.dart';
@@ -13,10 +13,12 @@ class DoctorTab extends StatefulWidget {
 }
 
 class _DoctorTabState extends State<DoctorTab> {
+
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
-    context.read<HomeBloc>().add(OnGetAllDoctors('1'));
-    // context.read<HomeBloc>().add(OnGetAllHospital());
+    context.read<DoctorTabBloc>().add(OnRefressh());
     super.initState();
   }
 
@@ -25,30 +27,41 @@ class _DoctorTabState extends State<DoctorTab> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 16),
-
+        10.heightBox,
+       DoctorSearchAndFiltterBtn(),
+          
         Expanded(
-          child: BlocBuilder<HomeBloc, HomeState>(
+          child: BlocBuilder<DoctorTabBloc, DoctorTabState>(
             buildWhen: (previous, current) =>
-                previous.allDoctorStatus != current.allDoctorStatus,
+                previous.doctorStatus != current.doctorStatus,
 
             builder: (context, state) {
-              if (state.allDoctorStatus == ApiStatus.error) {
+              if (state.doctorStatus == ApiStatus.loading) {
+                 return DoctorGridCardShimmer();
+             
+              } else if (state.doctorStatus == ApiStatus.error) {
                 return RefreshView(
                   onPressed: () =>
-                      context.read<HomeBloc>().add(OnGetAllDoctors('1')),
+                      context.read<DoctorTabBloc>().add(OnRefressh()),
                 ).radiusContainer(
                   color: Colors.grey.shade300,
                   margin: EdgeInsets.symmetric(horizontal: 15),
                   padding: EdgeInsets.symmetric(vertical: 40),
                 );
-              } else if (state.allDoctorStatus == ApiStatus.loading) {
-                return DoctorGridCardShimmer();
-              } else if (state.allDoctorStatus == ApiStatus.success) {
-                return Column(
-                  children: [
-                    Expanded(
-                      child: GridView.builder(
+              } else if (state.doctorStatus == ApiStatus.success) {
+               if(state.doctorList==null||state.doctorList!.isEmpty){
+                return RefreshView(
+                  onPressed: () =>
+                      context.read<DoctorTabBloc>().add(OnRefressh()),
+                ).radiusContainer(
+                  color: Colors.grey.shade300,
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  padding: EdgeInsets.symmetric(vertical: 40),
+                );
+               }
+
+                return GridView.builder(
+                        controller: _scrollController,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         padding: const EdgeInsets.symmetric(
@@ -63,16 +76,13 @@ class _DoctorTabState extends State<DoctorTab> {
                               childAspectRatio: 0.75,
                             ),
                         // itemCount: doctors.length,
-                        itemCount: state.allDoctorList?.length ?? 0,
+                        itemCount: state.doctorList?.length ?? 0,
 
                         itemBuilder: (context, index) {
-                          final d = state.allDoctorList![index];
+                          final d = state.doctorList![index];
                           return DoctorCard(doctor: d);
                         },
-                      ),
-                    ),
-                  ],
-                );
+                      );
               }
               return const SizedBox();
             },

@@ -29,6 +29,7 @@ class AppConfig {
   static const String getPublicDoctorQueues =
       '$baseUrl/api/v1/queues/live/doctor/{{doctorId}}/public?date=2024-12-25';
       static const String getAllHospitals = '$baseUrl/api/v1/hospitals';
+      static const String getAllDoctorsWithFiltterNoAuth = '$baseUrl/api/v1/doctors/public?';
   static  String getHospitalsById (String hospitalId) => '$baseUrl/api/v1/hospitals/$hospitalId';
   static  String getAllHospitalsByIdNoAuth (String hospitalId) => '$baseUrl/api/v1/hospitals/$hospitalId/public';
 

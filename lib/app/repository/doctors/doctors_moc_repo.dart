@@ -84,4 +84,10 @@ class DoctorsMocRepo extends BaseMockRepository  implements DoctorRepo {
     // TODO: implement getAllDoctors
     throw UnimplementedError();
   }
+  
+  @override
+  Future<ApiModel> getAllDoctorsWithFiltterNoAuth(Map<String, dynamic> data) {
+    // TODO: implement getAllDoctorsWithFiltterNoAuth
+    throw UnimplementedError();
+  }
 }

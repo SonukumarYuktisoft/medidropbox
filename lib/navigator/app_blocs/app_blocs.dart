@@ -3,6 +3,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medidropbox/app/dashboard/bloc/dashboard_bloc.dart';
 import 'package:medidropbox/app/dashboard/tabs/appointment/bloc/appointment_bloc.dart';
+import 'package:medidropbox/app/dashboard/tabs/doctor_tab/bloc/doctor_tab_bloc.dart';
 import 'package:medidropbox/app/dashboard/tabs/home/bloc/home_bloc.dart';
 import 'package:medidropbox/app/dashboard/tabs/hospital_tab/bloc/hospital_filter_bloc.dart';
 import 'package:medidropbox/app/dashboard/tabs/profile/bloc/profile_bloc.dart';
@@ -24,6 +25,7 @@ class AppBlocs {
     BlocProvider(create: (_) => ProfileBloc(RepoInjectors.profile)),
     BlocProvider(create: (_) => AppointmentBloc(RepoInjectors.appointmentRepo)),
     BlocProvider(create: (_) => HomeBloc(RepoInjectors.hospitalRepo, RepoInjectors.doctorRepo)),
+    BlocProvider(create: (_) => DoctorTabBloc(RepoInjectors.doctorRepo)),
     BlocProvider(create: (context) => HospitalDetailBloc(RepoInjectors.hospitalRepo,
     RepoInjectors.doctorRepo)),
     BlocProvider(create: (context) => HospitalFilterBloc(RepoInjectors.hospitalRepo)),

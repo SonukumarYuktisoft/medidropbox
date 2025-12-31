@@ -21,7 +21,10 @@ class OrderRoutes {
        GoRoute(
         path: AppRoutesPath.bookingConfirm,
         name: AppRoutesName.bookingConfirmView,
-        builder: (context, state) => const BookingConfirmationView(),
+        builder: (context, state){
+          var arg = state.extra as dynamic;
+         return  BookingConfirmationView(arg);
+        },
       ),
 /* 
        GoRoute(

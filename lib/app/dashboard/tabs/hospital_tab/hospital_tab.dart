@@ -3,7 +3,6 @@ import 'package:medidropbox/app/dashboard/tabs/hospital_tab/bloc/hospital_filter
 import 'package:medidropbox/app/dashboard/tabs/hospital_tab/bloc/hospital_filter_state.dart';
 import 'package:medidropbox/app/dashboard/tabs/hospital_tab/widgets/hospital_card.dart';
 import 'package:medidropbox/app/dashboard/tabs/hospital_tab/widgets/hospital_filter/hospital_filter_widget.dart';
-import 'package:medidropbox/core/extensions/container_extension.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 import 'package:medidropbox/core/helpers/app_loader/app_page_loader.dart';
 import 'package:medidropbox/core/helpers/app_shimmer/hospital_shimmer/hospital_card_shimmer/hospital_grid_card_shimmer.dart';

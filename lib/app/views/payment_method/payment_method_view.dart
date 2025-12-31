@@ -58,7 +58,7 @@ class PaymentMethodView extends StatelessWidget {
             }
             if (state.createBookingStatus == ApiStatus.success) {
               AppNavigators.pop();
-              AppNavigators.pushNamed(AppRoutesName.bookingConfirmView);
+              AppNavigators.pushNamed(AppRoutesName.bookingConfirmView,extra: state.data);
             }
           },
           child: SingleChildScrollView(

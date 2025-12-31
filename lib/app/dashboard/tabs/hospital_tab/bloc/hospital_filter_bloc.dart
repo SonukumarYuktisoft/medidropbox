@@ -76,15 +76,6 @@ class HospitalFilterBloc
     emit(state.copyWith(hasAmbulance: event.value));
   }
 
-  void _onApplyFilters(
-    OnApplyFilters event,
-    Emitter<HospitalFilterState> emit,
-  ) {
-    emit(state.copyWith(allHospitalStatus: ApiStatus.loading));
-    hospitals.clear();
-    page=0;
-    add(OnGetAllHospital());
-  }
 
 
 
@@ -194,6 +185,15 @@ List<AllHospitalModel> allHospitalModelListFromJson(dynamic data) {
         ),
       );
     }
+  }
+  void _onApplyFilters(
+    OnApplyFilters event,
+    Emitter<HospitalFilterState> emit,
+  ) {
+    emit(state.copyWith(allHospitalStatus: ApiStatus.loading));
+    hospitals.clear();
+    page=0;
+    add(OnGetAllHospital());
   }
 
   void _onPageNation(
