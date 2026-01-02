@@ -1,3 +1,4 @@
+import 'package:medidropbox/app/dashboard/tabs/home/bloc/home_bloc.dart';
 import 'package:medidropbox/app/models/common_model/book_appointment_model.dart';
 import 'package:medidropbox/app/views/payment_method/bloc/peyment_method_bloc.dart';
 import 'package:medidropbox/core/common/app_snackbaar.dart';
@@ -57,6 +58,7 @@ class PaymentMethodView extends StatelessWidget {
               AppSnackbar.showError(state.mess);
             }
             if (state.createBookingStatus == ApiStatus.success) {
+              context.read<HomeBloc>().add(OnInitiateMyQueueApi());
               AppNavigators.pop();
               AppNavigators.pushNamed(AppRoutesName.bookingConfirmView,extra: state.data);
             }

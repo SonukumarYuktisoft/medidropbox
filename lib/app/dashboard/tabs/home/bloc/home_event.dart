@@ -49,3 +49,12 @@ class OnSearchHospitals extends HomeEvent {
 }
 
 class OnResetHospitalFilters extends HomeEvent {}
+class OnInitiateMyQueueApi extends HomeEvent {}
+class OnInitiateLiveQueueApi extends HomeEvent {
+   final String drId;
+
+  const OnInitiateLiveQueueApi(this.drId);
+
+  @override
+  List<Object> get props => [drId];
+}

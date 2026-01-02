@@ -1,10 +1,12 @@
+import 'package:intl/intl.dart';
+
 class AppConfig {
    static const String baseUrl = 'http://10.0.2.2:8080';
 
  //static const String baseUrl = 'http://192.168.1.5:8080';
 
 
-  // 1. Registration & Authentication
+  // 1. Registration & Authentication 
   static const String patientsRegister = '$baseUrl/api/v1/patients/register';
   static const String generateOtp = '$baseUrl/api/v1/otp/generate';
   static const String verifyOtpAndLogin = '$baseUrl/api/v1/otp/verify';
@@ -42,6 +44,10 @@ class AppConfig {
 
   //  6. Queue Management
   static const String getMyQueues = '$baseUrl/api/v1/queues/my-queues';
-  static const String getLiveQueueForDoctor = '$baseUrl/api/v1/queues/live/doctor/';
+  static  String getLiveQueueForDoctor(String drId) => '$baseUrl/api/v1/queues/live/doctor/$drId?date=${getCurrentDate()}';
   static const String getLiveQueueForDoctorPublicNoAuth = '$baseUrl/api/v1/queues/live/doctor/';
+}
+////api/v1/queues/live/doctor/{{doctorId}}?date=2024-12-25
+String getCurrentDate() {
+  return DateFormat('yyyy-MM-dd').format(DateTime.now());
 }

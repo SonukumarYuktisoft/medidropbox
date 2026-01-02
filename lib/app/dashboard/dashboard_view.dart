@@ -14,6 +14,7 @@ class _DashboardViewState extends State<DashboardView> {
   void initState() {
     context.read<HomeBloc>().add(OnGetAllHospital());
     context.read<HomeBloc>().add(OnGetAllDoctors('1'));
+    context.read<HomeBloc>().add(OnInitiateMyQueueApi());
     super.initState();
   }
 

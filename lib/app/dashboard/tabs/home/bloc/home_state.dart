@@ -16,6 +16,10 @@ class HomeState extends Equatable {
     this.hasMoreHospitals = true,
     this.isLoadingMore = false,
     this.hospitalFilters,
+    this.myQueueList,
+    this.myQueueStatus=ApiStatus.initial,
+    this.liveQueueStatus=ApiStatus.initial,
+    this.liveQueueData
   });
   
   final String mess;
@@ -35,6 +39,11 @@ class HomeState extends Equatable {
   final bool isLoadingMore;
   final Map<String, dynamic>? hospitalFilters;
 
+  final List<MyQueueModel>?myQueueList;
+  final ApiStatus myQueueStatus;
+    final  LiveQueueModel? liveQueueData;
+   final ApiStatus liveQueueStatus;
+
   HomeState copyWith({
     String? mess,
     ApiStatus? allHospitalStatus,
@@ -49,6 +58,11 @@ class HomeState extends Equatable {
     bool? hasMoreHospitals,
     bool? isLoadingMore,
     Map<String, dynamic>? hospitalFilters,
+
+    List<MyQueueModel>?myQueueList,
+    ApiStatus? myQueueStatus,
+    LiveQueueModel?liveQueueData,
+    ApiStatus? liveQueueStatus,
   }) => HomeState(
     mess: mess ?? this.mess,
     allHospitalStatus: allHospitalStatus ?? this.allHospitalStatus,
@@ -62,10 +76,19 @@ class HomeState extends Equatable {
     hasMoreHospitals: hasMoreHospitals ?? this.hasMoreHospitals,
     isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     hospitalFilters: hospitalFilters ?? this.hospitalFilters,
+    myQueueList: myQueueList ?? this.myQueueList,
+    myQueueStatus: myQueueStatus ?? this.myQueueStatus,
+
+    liveQueueData: liveQueueData ?? this.liveQueueData,
+    liveQueueStatus: liveQueueStatus ?? this.liveQueueStatus,
   );
   
   @override
   List<Object?> get props => [
+    liveQueueStatus,
+    liveQueueData,
+    myQueueList,
+    myQueueStatus,
     mess,
     allHospitalStatus,
     allHospitalList,

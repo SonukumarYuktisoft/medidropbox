@@ -6,4 +6,5 @@ abstract class DoctorRepo {
   Future<ApiModel> getAllDoctors(String id);
   Future<ApiModel> getAllDoctorsWithFiltterNoAuth(Map<String,dynamic> data);
   Future<ApiModel> getDoctorById(String id);
+
 }

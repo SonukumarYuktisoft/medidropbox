@@ -8,41 +8,10 @@ class QueueApiRepo implements QueueRepo {
 
   @override
   Future<ApiModel> getLiveQueueDoctor(
-    String doctorId, {
-    String? date = '',
-  }) async {
+    String doctorId) async {
     try {
       final response = await network.requestGetForApi(
-        url:
-            AppConfig.getLiveQueueForDoctor +
-            doctorId +
-            (date != null && date.isNotEmpty ? '?date=$date' : ''),
-
-        authToken: true,
-      );
-      final bool isSuccess = (response != null && response.statusCode == 200);
-      return ApiModel(
-        status: isSuccess,
-        message: "message",
-        data: isSuccess ? response.data : null,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<ApiModel> getLiveQueueForDoctorPublicNoAuth(
-    String doctorId, {
-    String? date = '',
-  }) async {
-    try {
-      final response = await network.requestGetForApi(
-        url:
-            AppConfig.getLiveQueueForDoctorPublicNoAuth +
-            doctorId +
-            (date != null && date.isNotEmpty ? '?date=$date' : ''),
-
+        url:AppConfig.getLiveQueueForDoctor(doctorId),
         authToken: true,
       );
       final bool isSuccess = (response != null && response.statusCode == 200);
@@ -61,6 +30,27 @@ class QueueApiRepo implements QueueRepo {
     try {
       final response = await network.requestGetForApi(
         url: AppConfig.getMyQueues,
+        authToken: true,
+      );
+      final bool isSuccess = (response != null && response.statusCode == 200);
+      return ApiModel(
+        status: isSuccess,
+        message: "message",
+        data: isSuccess ? response.data : null,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  @override
+  Future<ApiModel> getLiveQueueForDoctorPublicNoAuth(
+    String doctorId) async {
+    try {
+      final response = await network.requestGetForApi(
+        url:
+            AppConfig.getLiveQueueForDoctorPublicNoAuth ,
 
         authToken: true,
       );
@@ -74,4 +64,5 @@ class QueueApiRepo implements QueueRepo {
       rethrow;
     }
   }
+
 }
