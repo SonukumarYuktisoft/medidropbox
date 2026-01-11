@@ -27,6 +27,12 @@ class AppointmentMocRepo extends BaseMockRepository implements AppointmentRepo {
     // TODO: implement getAppointmentByid
     throw UnimplementedError();
   }
+  
+  @override
+  Future<ApiModel> shareBooking(String bookingId) {
+    // TODO: implement shareBooking
+    throw UnimplementedError();
+  }
 }
 
 var createBookingMoc={

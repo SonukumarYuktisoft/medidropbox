@@ -3,7 +3,6 @@ import 'package:medidropbox/app/dashboard/tabs/doctor_tab/widgets/doctor_card.da
 import 'package:medidropbox/app/dashboard/tabs/doctor_tab/widgets/doctor_search_and_filtter_btn.dart';
 import 'package:medidropbox/core/helpers/app_export.dart';
 import 'package:medidropbox/core/helpers/app_shimmer/doctor_shimmer/doctor_cards_shimmer/doctor_grid_card_shimmer.dart';
-import 'package:medidropbox/core/helpers/refresh_view.dart';
 
 class DoctorTab extends StatefulWidget {
   const DoctorTab({super.key});

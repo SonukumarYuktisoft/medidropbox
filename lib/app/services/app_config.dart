@@ -23,7 +23,9 @@ class AppConfig {
   //bookings
   static const String createBooking = '$baseUrl/api/v1/bookings'; //post api
   static const String getBooking = '$baseUrl/api/v1/bookings/my-bookings';
-  static const String getBookingByid = '$baseUrl/api/v1/my-bookings/';
+  static const String getBookingByid = '$baseUrl/api/v1/bookings/';
+
+  static const String shareBooking = '$baseUrl/api/v1/booking-shares';
   // doctoer queues
   static const String getMyqueues = '$baseUrl/api/v1/queues/my-queues';
   static const String getMyDoctorQueues =
@@ -46,6 +48,23 @@ class AppConfig {
   static const String getMyQueues = '$baseUrl/api/v1/queues/my-queues';
   static  String getLiveQueueForDoctor(String drId) => '$baseUrl/api/v1/queues/live/doctor/$drId?date=${getCurrentDate()}';
   static const String getLiveQueueForDoctorPublicNoAuth = '$baseUrl/api/v1/queues/live/doctor/';
+  
+  //[Upload lab report]
+  static const String uploadLabReport = '$baseUrl/api/v1/patients/lab-reports/upload';
+  static const String getLabReport = '$baseUrl/api/v1/patients/lab-reports';
+  static const String getLabReportById = '$baseUrl/api/v1/patients/lab-reports/';
+
+  
+  //[health profile or vitals]
+  static const String createOrUpdateHealthProfile = '$baseUrl/api/v1/health-profile/profile';
+  static const String getHealthProfile = '$baseUrl/api/v1/health-profile/profile';
+  static const String createVitalRecord = '$baseUrl/api/v1/health-profile/vitals';
+  static  String updateVitalRecord(String vitalRecordId) => '$baseUrl/api/v1/health-profile/vitals/$vitalRecordId';
+  static  String deleteVitalRecord(String vitalRecordId) => '$baseUrl/api/v1/health-profile/vitals/$vitalRecordId';
+  static const String getLatestVital = '$baseUrl/api/v1/health-profile/vitals/latest';
+  static const String getVitalHistory = '$baseUrl/api/v1/health-profile/vitals/history';
+  static const String getBMIReport = '$baseUrl/api/v1/health-profile/bmi-report';
+
 }
 ////api/v1/queues/live/doctor/{{doctorId}}?date=2024-12-25
 String getCurrentDate() {

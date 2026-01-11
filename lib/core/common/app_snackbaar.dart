@@ -1,11 +1,11 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:medidropbox/navigator/app_navigators/app_key.dart';
+
 class AppSnackbar {
   // Error Snackbar
   static void showError(String message, {Duration duration = const Duration(seconds: 3)}) {
-    _clearAndShowSnackbar(
+    _showSnackbar(
       message: message,
       backgroundColor: const Color(0xFFDC2626),
       icon: Icons.error_outline,
@@ -16,7 +16,7 @@ class AppSnackbar {
 
   // Success Snackbar
   static void showSuccess(String message, {Duration duration = const Duration(seconds: 3)}) {
-    _clearAndShowSnackbar(
+    _showSnackbar(
       message: message,
       backgroundColor: const Color(0xFF16A34A),
       icon: Icons.check_circle_outline,
@@ -27,7 +27,7 @@ class AppSnackbar {
 
   // Info Snackbar
   static void showInfo(String message, {Duration duration = const Duration(seconds: 3)}) {
-    _clearAndShowSnackbar(
+    _showSnackbar(
       message: message,
       backgroundColor: const Color(0xFF2563EB),
       icon: Icons.info_outline,
@@ -38,7 +38,7 @@ class AppSnackbar {
 
   // Warning Snackbar
   static void showWarning(String message, {Duration duration = const Duration(seconds: 3)}) {
-    _clearAndShowSnackbar(
+    _showSnackbar(
       message: message,
       backgroundColor: const Color(0xFFF59E0B),
       icon: Icons.warning_amber_outlined,
@@ -56,29 +56,6 @@ class AppSnackbar {
     Color textColor = Colors.white,
     Duration duration = const Duration(seconds: 3),
   }) {
-    _clearAndShowSnackbar(
-      message: message,
-      backgroundColor: backgroundColor,
-      icon: icon,
-      iconColor: iconColor,
-      textColor: textColor,
-      duration: duration,
-    );
-  }
-
-  // Clear any existing snackbar before showing new one
-  static void _clearAndShowSnackbar({
-    required String message,
-    required Color backgroundColor,
-    IconData? icon,
-    Color iconColor = Colors.white,
-    Color textColor = Colors.white,
-    Duration duration = const Duration(seconds: 3),
-  }) {
-    // Remove any existing snackbar first
-    AppKey.scaffoldMessengerKey.currentState?.clearSnackBars();
-    
-    // Show the new snackbar
     _showSnackbar(
       message: message,
       backgroundColor: backgroundColor,
@@ -98,6 +75,10 @@ class AppSnackbar {
     Color textColor = Colors.white,
     Duration duration = const Duration(seconds: 3),
   }) {
+    // Hide current snackbar if any
+    AppKey.scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+    
+    // Show the new snackbar
     AppKey.scaffoldMessengerKey.currentState?.showSnackBar(
       SnackBar(
         content: Row(
@@ -143,6 +124,7 @@ class AppSnackbar {
     AppKey.scaffoldMessengerKey.currentState?.clearSnackBars();
   }
 }
+
 // Usage Examples:
 // AppSnackbar.showError('Failed to load data');
 // AppSnackbar.showSuccess('Profile updated successfully');

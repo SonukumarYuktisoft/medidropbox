@@ -4,4 +4,6 @@ abstract class AppointmentRepo {
   Future<ApiModel> getAppointment();
   Future<ApiModel> getAppointmentByid(String id);
   Future<ApiModel> createAppointment(Map<String, dynamic> data);
+
+  Future<ApiModel> shareBooking(String bookingId);
 }

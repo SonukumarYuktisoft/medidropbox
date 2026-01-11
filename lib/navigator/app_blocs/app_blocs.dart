@@ -7,9 +7,11 @@ import 'package:medidropbox/app/dashboard/tabs/doctor_tab/bloc/doctor_tab_bloc.d
 import 'package:medidropbox/app/dashboard/tabs/home/bloc/home_bloc.dart';
 import 'package:medidropbox/app/dashboard/tabs/hospital_tab/bloc/hospital_filter_bloc.dart';
 import 'package:medidropbox/app/dashboard/tabs/profile/bloc/profile_bloc.dart';
+import 'package:medidropbox/app/views/health_profile/bloc/health_profile_bloc.dart';
 
 import 'package:medidropbox/app/views/hospitals_details/bloc/hospital_detail_bloc.dart';
 import 'package:medidropbox/app/views/payment_method/bloc/peyment_method_bloc.dart' show PeymentMethodBloc;
+import 'package:medidropbox/app/views/upload_lab_report/bloc/upload_lab_report_bloc.dart';
 import 'package:medidropbox/core/utility/utility_screen/network/bloc/network_bloc.dart';
 import 'package:medidropbox/app/views/OnboardingScreen/bloc/onboarding_bloc.dart';
 import 'package:medidropbox/app/auth/bloc/auth_bloc.dart';
@@ -29,6 +31,8 @@ class AppBlocs {
     BlocProvider(create: (context) => HospitalDetailBloc(RepoInjectors.hospitalRepo,
     RepoInjectors.doctorRepo)),
     BlocProvider(create: (context) => HospitalFilterBloc(RepoInjectors.hospitalRepo)),
-    BlocProvider(create: (context) => PeymentMethodBloc(RepoInjectors.appointmentRepo))
+    BlocProvider(create: (context) => PeymentMethodBloc(RepoInjectors.appointmentRepo)),
+    BlocProvider(create: (context) => UploadLabReportBloc(RepoInjectors.labReport)),
+    BlocProvider(create: (context) => HealthProfileBloc(RepoInjectors.healthProfileReport))
   ];
 }

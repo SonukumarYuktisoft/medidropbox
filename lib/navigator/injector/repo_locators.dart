@@ -3,9 +3,15 @@ import 'package:medidropbox/app/repository/appointment/appointment_moc_repo.dart
 import 'package:medidropbox/app/repository/appointment/appointment_repo.dart';
 import 'package:medidropbox/app/repository/doctors/doctor_api_repo.dart';
 import 'package:medidropbox/app/repository/doctors/doctor_repo.dart';
+import 'package:medidropbox/app/repository/health_profile/health_profile_api_repo.dart';
+import 'package:medidropbox/app/repository/health_profile/health_profile_moc_repo.dart';
+import 'package:medidropbox/app/repository/health_profile/health_profile_repo.dart';
 import 'package:medidropbox/app/repository/hospitals/hospital_api_repo.dart';
 import 'package:medidropbox/app/repository/hospitals/hospital_moc_repo.dart';
 import 'package:medidropbox/app/repository/hospitals/hospital_repo.dart';
+import 'package:medidropbox/app/repository/lab_report/lab_report_api_repo.dart';
+import 'package:medidropbox/app/repository/lab_report/lab_report_moc_repo.dart';
+import 'package:medidropbox/app/repository/lab_report/lab_report_repo.dart';
 import 'package:medidropbox/app/repository/profile/profile_api_repo.dart';
 import 'package:medidropbox/app/repository/profile/profile_moc_repo.dart';
 import 'package:medidropbox/app/repository/profile/profile_repo.dart';
@@ -26,7 +32,21 @@ class RepoLocators {
          AppKey.getIt.registerLazySingleton<AppointmentRepo>(
           () => AppointmentApiRepo(),
         );
+          AppKey.getIt.registerLazySingleton<LabReportRepo>(
+          () => LabReportApiRepo(),
+        );
+          AppKey.getIt.registerLazySingleton<HealthProfileRepo>(
+          () => HealthProfileApiRepo(),
+        );
+        
       default:
+         AppKey.getIt.registerLazySingleton<HealthProfileRepo>(
+          () => HealthProfileMocRepo(),
+        );
+
+        AppKey.getIt.registerLazySingleton<LabReportRepo>(
+          () => LabReportMocRepo(),
+        );
         AppKey.getIt.registerLazySingleton<HospitalRepo>(
           () => HospitalMocRepo(),
         );

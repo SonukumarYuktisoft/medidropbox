@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:medidropbox/app/dashboard/tabs/appointment/booking_details.dart';
 import 'package:medidropbox/app/models/common_model/book_appointment_model.dart';
 import 'package:medidropbox/app/views/booking_confirmation/booking_confirmation_view.dart';
 import 'package:medidropbox/app/views/payment_method/payment_method_view.dart';
@@ -24,6 +25,14 @@ class OrderRoutes {
         builder: (context, state){
           var arg = state.extra as dynamic;
          return  BookingConfirmationView(arg);
+        },
+      ),
+       GoRoute(
+        path: AppRoutesPath.bookingDetails,
+        name: AppRoutesName.bookingDetailsView,
+        builder: (context, state){
+          var arg = state.extra as String;
+         return  BookingDetails(arg);
         },
       ),
 /* 

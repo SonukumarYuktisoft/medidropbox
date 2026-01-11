@@ -1,10 +1,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:medidropbox/app/dashboard/dashboard_view.dart';
-import 'package:medidropbox/app/models/hospitals_models/all_hospital_model.dart';
 import 'package:medidropbox/app/views/book_appointment/book_appointment_view.dart';
 import 'package:medidropbox/app/views/doctor_details/doctor_details_view.dart';
 import 'package:medidropbox/app/views/edit_profile/edit_profile.dart';
+import 'package:medidropbox/app/views/health_profile/health_profile_view.dart';
 import 'package:medidropbox/app/views/hospitals_details/hospital_details_view.dart';
+import 'package:medidropbox/app/views/upload_lab_report/upload_lab_report_view.dart';
 import 'package:medidropbox/navigator/routes/app_routes/app_routes_name.dart';
 import 'package:medidropbox/navigator/routes/app_routes/app_routes_path.dart';
 
@@ -41,5 +42,19 @@ class DashboardRoutes {
         return DoctorDetailsView(doctorId: doctorId);
       },
     ),
+
+    
+       GoRoute(
+      path: AppRoutesPath.uploadLabReport,
+      name: AppRoutesName.uploadLabReportView,
+      builder: (context, state) =>UploadLabReportView(),
+    ),
+
+     GoRoute(
+      path: AppRoutesPath.healthProfile,
+      name: AppRoutesName.healthProfileView,
+      builder: (context, state) =>HealthProfileView(),
+    ),
+
   ];
 }

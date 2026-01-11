@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:medidropbox/app/dashboard/tabs/appointment/bloc/appointment_bloc.dart';
 import 'package:medidropbox/app/dashboard/tabs/appointment/bloc/appointment_state.dart';
 import 'package:medidropbox/app/models/bookings/myboookings_model.dart';
@@ -130,17 +131,24 @@ class _AppointmentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = data.where((e) {
-      final queueStatus = e.queue?.status;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
 
-      if (queueStatus == null) return false;
+    final filtered = data.where((e) {
+      final bookingDate = e.bookingDate;
+
+      if (bookingDate == null) return false;
+
+      final bookingOnlyDate =
+          DateTime(bookingDate.year, bookingDate.month, bookingDate.day);
 
       if (isUpcoming) {
-        /// Upcoming tab → only WAITING
-        return queueStatus.toUpperCase() == 'WAITING';
+        /// Today OR Future
+        return bookingOnlyDate.isAtSameMomentAs(today) ||
+            bookingOnlyDate.isAfter(today);
       } else {
-        /// Past tab → everything except WAITING
-        return queueStatus.toUpperCase() != 'WAITING';
+        /// Past
+        return bookingOnlyDate.isBefore(today);
       }
     }).toList();
 

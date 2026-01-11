@@ -11,6 +11,7 @@ class AppRoutesPath {
   static const String payment = '/payment';
   static const String paymentSuccess = '/payment-success';
   static const String chat = '/chat';
+  static const String uploadLabReport = '/upload-lab-report';
 
   static const String noInternetConnection = '/noInternetConnection';
   static const String paymentMethod = '/payment-method';
@@ -20,6 +21,6 @@ class AppRoutesPath {
   static const String editprofile = '/edit-profile';
   static const String bookingDetails = '/booking-details';
   static const String createAppointment = '/create-Appointment-view';
-
+  static const String healthProfile = '/health-profile';
   static const String onBoard = '/onboard';
 }

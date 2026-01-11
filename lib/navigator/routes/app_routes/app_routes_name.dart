@@ -11,6 +11,7 @@ class AppRoutesName {
   static const String paymentView = 'payment_view';
   static const String paymentSuccessView = 'payment_success_view';
   static const String chatView = 'chat_view';
+  static const String uploadLabReportView = 'upload_lab_report_view';
   static const String doctorDetailsView = 'doctor_details_View';
   static const String noInternetConnectionView = 'noInternetConnection_view';
   static const String bookAppointmentView = 'book_appointment_view';
@@ -19,4 +20,5 @@ class AppRoutesName {
   static const String editprofileView = 'edit-profile';
   static const String bookingDetailsView = 'booking-details';
   static const String onBoardView = 'on-board-view';
+  static const String healthProfileView = 'health-profile-view';
 }

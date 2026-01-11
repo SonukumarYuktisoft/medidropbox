@@ -53,7 +53,7 @@ class DoctorApiRepo implements DoctorRepo {
         if (filters['maxRating'] != null) {
           queryParams['maxRating'] = filters['maxRating'];
         }
-        if (filters['isActive'] != null) queryParams['isActive'] = filters['isActive'];
+        if (filters['isActive'] != null&&filters['isActive'] != false) queryParams['isActive'] = filters['isActive'];
         if (filters['minFees'] != null) queryParams['minFees'] = filters['minFees'];
         if (filters['page'] != null) queryParams['page'] = filters['page'];
         if (filters['size'] != null) queryParams['size'] = filters['size'];
@@ -74,7 +74,7 @@ class DoctorApiRepo implements DoctorRepo {
       return ApiModel(
         status: isSuccess,
         message: "message",
-        data: isSuccess ? response.data : null,
+        data: isSuccess ? response.data['content'] : null,
       );
     } catch (e) {
       rethrow;

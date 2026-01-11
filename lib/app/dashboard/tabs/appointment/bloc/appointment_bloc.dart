@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:medidropbox/app/dashboard/tabs/appointment/bloc/appointment_state.dart';
@@ -14,6 +16,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   AppointmentBloc(this.repo) : super(const AppointmentState()) {
     on<OnGetBooking>(_onBooking);
     on<OnGetBookingByid>(_onBookingDetail);
+    on<OnShareBooking>(_onShareBooking);
   }
 
   Future<void> _onBooking(
@@ -48,27 +51,55 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     OnGetBookingByid event,
     Emitter<AppointmentState> emit,
   ) async {
-    emit(state.copyWith(bookingStatus: ApiStatus.loading));
+    emit(state.copyWith(bookingDetailsStatus: ApiStatus.loading));
 
     try {
       final res = await repo.getAppointmentByid(event.id);
-
-      ApiResponseHandler.handle<List<MyBookings>, AppointmentState>(
+      ApiResponseHandler.handle<MyBookings, AppointmentState>(
         emit: emit,
         state: state,
         response: res,
-        parser: (data) =>
-            List<MyBookings>.from(data.map((x) => MyBookings.fromJson(x))),
+        parser: (data) =>MyBookings.fromJson(data),
         onSuccess: (state, mess, data) => state.copyWith(
-          bookingStatus: ApiStatus.success,
+          bookingDetailsStatus: ApiStatus.success,
           mess: mess,
-          bookingData: data,
+          bookingDetails: data,
         ),
         onError: (state, mess) =>
-            state.copyWith(bookingStatus: ApiStatus.error, mess: mess),
+            state.copyWith(bookingDetailsStatus: ApiStatus.error, mess: mess),
       );
     } catch (e) {
-      emit(state.copyWith(bookingStatus: ApiStatus.error, mess: e.toString()));
+      emit(state.copyWith(bookingDetailsStatus: ApiStatus.error, mess: e.toString()));
     }
   }
+
+
+ 
+  Future<void> _onShareBooking(
+    OnShareBooking event,
+    Emitter<AppointmentState> emit,
+  ) async {
+    emit(state.copyWith(shareBookingStatus: ApiStatus.loading));
+
+    try {
+      final res = await repo.shareBooking(event.id);
+      ApiResponseHandler.handle(
+        emit: emit,
+        state: state,
+        response: res,
+        parser: (data) =>data,
+        onSuccess: (state, mess, data) => state.copyWith(
+          shareBookingStatus: ApiStatus.success,
+          mess: mess,
+        ),
+        onError: (state, mess) =>
+            state.copyWith(shareBookingStatus: ApiStatus.error, mess: mess),
+      );
+    } catch (e) {
+      emit(state.copyWith(shareBookingStatus: ApiStatus.error, mess: e.toString()));
+    }
+  }
+
+
+
 }

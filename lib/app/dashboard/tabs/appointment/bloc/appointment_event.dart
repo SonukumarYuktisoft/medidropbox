@@ -15,3 +15,11 @@ class OnGetBookingByid extends AppointmentEvent {
   @override
   List<Object> get props => [id];
 }
+
+
+class OnShareBooking extends AppointmentEvent {
+  const OnShareBooking(this.id);
+  final String id;
+  @override
+  List<Object> get props => [id];
+}

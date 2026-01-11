@@ -25,7 +25,7 @@ class DoctorTabBloc extends Bloc<DoctorTabEvent, DoctorTabState> {
     on<OnPageNation>(_onPageNation);
   }
 
-int size = 0;
+int size = 1;
 List<AllDoctorsModel>doctorList = [];
   /// 🔍 Search
   void _onChangedSearch(
@@ -131,7 +131,7 @@ List<AllDoctorsModel>doctorList = [];
   ) {
     emit(state.copyWith(doctorStatus: ApiStatus.loading));
     doctorList.clear();
-    size=0;
+    size=1;
     add(OnGetAllDoctors());
   }
 
@@ -153,7 +153,7 @@ List<AllDoctorsModel>doctorList = [];
     
     ));
     doctorList.clear();
-    size=0;
+    size=1;
     add(OnGetAllDoctors());
   }
 }

@@ -97,6 +97,17 @@ class ProfileTab extends StatelessWidget {
 
                 const SizedBox(height: 32),
 
+                 _profileTile(
+                  context,
+                  icon: Icons.upload_file,
+                  title: "Upload lab report",
+                  onTap: () {
+
+                    AppNavigators.pushNamed(AppRoutesName.uploadLabReportView);
+                  },
+                ),
+
+
                 _profileTile(
                   context,
                   icon: Icons.favorite_border,
@@ -128,6 +139,9 @@ class ProfileTab extends StatelessWidget {
                   icon: Icons.logout,
                   title: "Log out",
                   isLogout: true,
+                  onTap: (){
+                     showLogoutDialog(context);
+                  }
                 ),
               ],
             ),
@@ -155,12 +169,7 @@ class ProfileTab extends StatelessWidget {
         ),
       ),
       trailing: const Icon(Icons.chevron_right),
-      onTap: () {
-        if (isLogout) {
-          showLogoutDialog(context);
-          //  LogOutStorage().logOut();
-        }
-      },
+      onTap:onTap,
     );
   }
 }

@@ -53,11 +53,46 @@ class AppointmentApiRepo implements AppointmentRepo {
       final bool isSuccess = (response != null && response.statusCode == 200);
       return ApiModel(
         status: isSuccess,
-        message: "message",
+        message:isSuccess? "message":"Something wount wrong",
         data: isSuccess ? response.data : null,
       );
     } catch (e) {
       rethrow;
     }
   }
+
+
+
+  @override
+  Future<ApiModel> shareBooking(String id) async {
+    try {
+      String getTodayEndDateTime() {
+  final now = DateTime.now();
+
+  return '${now.year.toString().padLeft(4, '0')}-'
+         '${now.month.toString().padLeft(2, '0')}-'
+         '${now.day.toString().padLeft(2, '0')}'
+         'T23:59:59';
+}
+
+      final response = await network.requestPostForApi(
+        url: AppConfig.shareBooking,
+        authToken: true,
+        dictParameter: {
+             "bookingId": id,
+            "expiresAt": getTodayEndDateTime()
+        }
+      );
+      final bool isSuccess = (response != null && response.statusCode == 200);
+      return ApiModel(
+        status: isSuccess,
+        message:isSuccess? "Booking shared successfully!":"Something wount wrong",
+        data: isSuccess ? response.data : null,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
 }

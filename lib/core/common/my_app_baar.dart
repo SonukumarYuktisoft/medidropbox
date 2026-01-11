@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:medidropbox/core/extensions/button_extension.dart';
 import 'package:medidropbox/core/extensions/text_extension.dart';
-import 'package:medidropbox/navigator/app_navigators/app_navigators.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -10,12 +7,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? color;
   final Color leadColor;
   final Color titleColor;
+  final double titleSize;
   final bool? isShowBorder;
   final bool isShowLeadIcon;
+  final bool centerTitle;
   final List<Widget>? actions;
   final PreferredSizeWidget? bottom;
-  final bool? centerTitle;
-  final double titleSize;
 
   const MyAppBar({
     super.key,
@@ -25,32 +22,34 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.titleWidget,
     this.isShowLeadIcon = true,
+    this.centerTitle = false,
     this.titleColor = Colors.black,
     this.leadColor = Colors.black,
     this.bottom,
-    this.centerTitle,
-    this.titleSize = 16
+    this.titleSize=16
   });
 
   @override
   Widget build(BuildContext context) {
+  
     return AppBar(
-       centerTitle: centerTitle,
+      centerTitle: centerTitle,
       automaticallyImplyLeading: isShowLeadIcon,
       iconTheme: IconThemeData(color: leadColor),
-      leading: Icon(CupertinoIcons.back).asIconButton(onPressed: ()=>AppNavigators.pop()),
       backgroundColor: color ?? Theme.of(context).appBarTheme.backgroundColor,
       elevation: 0,
       title: titleWidget ??(title ?? '').toHeadingText(
-            fontSize: titleSize,
-            fontWeight: FontWeight.w500,
-            color: titleColor,
-          ),
+        fontSize: titleSize,
+        fontWeight: FontWeight.w500,
+        color: titleColor,
+      ),
       actions: actions,
       bottom: (bottom != null || (isShowBorder ?? false))
           ? PreferredSize(
               preferredSize: Size.fromHeight(
                 (bottom?.preferredSize.height ?? 0) + ((isShowBorder ?? false) ? 0.5 : 0),
+               
+             
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
